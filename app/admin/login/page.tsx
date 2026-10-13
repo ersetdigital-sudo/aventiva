@@ -14,7 +14,7 @@ export default async function AdminLoginPage() {
   if (await isAdmin()) redirect("/admin");
 
   return (
-    <main id="main" className="wrap py-10">
+    <main id="main" className="wrap grid min-h-[70vh] place-items-center py-10 sm:py-14">
       <AdminLogin />
     </main>
   );
