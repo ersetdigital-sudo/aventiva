@@ -40,3 +40,24 @@ Catatan setup (hal yang tidak terlihat dari manifest):
   semula (localhost saja). HMR diaktifkan lewat `WATCHPACK_POLLING=true`.
 - **Verifikasi**: healthcheck compose memakai `fetch('http://127.0.0.1:3000/')` (Node 22
   sudah punya `fetch`; image slim tidak punya curl/wget).
+
+## Panel admin (`/admin`)
+
+- **Satu kata sandi.** Login di `/admin/login` memakai nilai `ADMIN_KEY`. Sesi = cookie
+  httpOnly `avd_admin` berisi HMAC-SHA256 dari `ADMIN_KEY` (`lib/admin-auth.ts`), berlaku
+  8 jam. Karena turunan dari ADMIN_KEY, mengganti ADMIN_KEY otomatis membatalkan sesi lama.
+  `/admin` redirect ke `/admin/login` bila cookie tidak valid; keluar lewat
+  `POST /api/admin/logout`.
+- **Menulis hanya lewat kunci rahasia server.** Semua route `/api/admin/*` memakai
+  `createAdminSupabase()` (`lib/supabase-admin.ts`, env `SUPABASE_SECRET_KEY` = kunci
+  `sb_secret_…`) sebab kunci publishable tidak boleh menulis ke tabel katalog (RLS hanya
+  memberi GRANT select). Tanpa kunci rahasia dashboard jatuh ke mode baca dan UI-nya
+  memberi tahu.
+- **Setelah produk diubah**, route memanggil `revalidate()` (`lib/db.ts`) supaya cache
+  katalog 30 detik di situs langsung bersih.
+- **Route**: `login` · `logout` · `overview` (jumlah baris + statistik transaksi) ·
+  `products` (GET/POST) · `products/[id]` (PATCH/DELETE) · `transactions` (GET, parameter
+  `status` & `q`) · `transactions/[id]` (PATCH status) · `qris` (upload; otorisasi via
+  cookie sesi atau field `key`).
+- Aplikasi ini tidak punya akun pengguna, jadi "aktivitas" = baris tabel `transactions`.
+

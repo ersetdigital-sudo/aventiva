@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { isAdmin } from "@/lib/admin-auth";
 import { ASSET_BUCKET, SUPABASE_KEY, SUPABASE_URL } from "@/lib/supabase";
 
 /** Upload gambar QRIS ke Supabase Storage (bucket publik `assets/qris.png`). */
@@ -11,13 +12,13 @@ export async function POST(req: Request) {
   const adminKey = process.env.ADMIN_KEY;
   if (!adminKey) {
     return NextResponse.json(
-      { ok: false, error: "ADMIN_KEY belum di-set di .env.local" },
+      { ok: false, error: "ADMIN_KEY belum di-set di server" },
       { status: 500 },
     );
   }
   if (!SUPABASE_URL || !SUPABASE_KEY) {
     return NextResponse.json(
-      { ok: false, error: "Supabase belum dikonfigurasi (cek .env.local)" },
+      { ok: false, error: "Supabase belum dikonfigurasi (isi kunci lewat Secrets)" },
       { status: 500 },
     );
   }
@@ -27,7 +28,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "Form tidak valid." }, { status: 400 });
   }
 
-  if (String(form.get("key") ?? "") !== adminKey) {
+  // Otorisasi: sesi panel admin (cookie httpOnly) atau kunci admin dari form.
+  const viaSession = await isAdmin();
+  if (!viaSession && String(form.get("key") ?? "") !== adminKey) {
     return NextResponse.json({ ok: false, error: "Kunci admin salah." }, { status: 401 });
   }
 

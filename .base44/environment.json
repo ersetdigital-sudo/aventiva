@@ -15,7 +15,12 @@
     },
     {
       "name": "ADMIN_KEY",
-      "description": "Kunci rahasia panel /admin (upload gambar QRIS). Di sandbox ada placeholder di .env.base44-defaults; ganti dengan nilai sendiri bila perlu.",
+      "description": "Kata sandi login panel /admin (satu kata sandi, sesi 8 jam). Di sandbox ada placeholder di .env.base44-defaults; nilai dashboard selalu menang.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "SUPABASE_SECRET_KEY",
+      "description": "Kunci rahasia server Supabase (sb_secret_...), dari Dashboard Supabase -> Project Settings -> API keys. Dipakai hanya di server agar panel admin bisa menyimpan perubahan produk & status transaksi. Tanpa ini dashboard hanya bisa membaca.",
       "requiredAtBoot": false
     }
   ]
