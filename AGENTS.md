@@ -47,6 +47,22 @@ Catatan setup (hal yang tidak terlihat dari manifest):
   dari `iframe.contentDocument`; klik tab di dalam iframe itu tetap gesture asli.
   Sesi admin dari preview user dipakai apa adanya — jangan login sendiri.
 
+## Deploy ke Vercel
+
+- Repo ini **tidak punya `vercel.json`** — semua setelan deploy ada di dashboard Vercel
+  (project terhubung ke `ersetdigital-sudo/aventiva`). **Production Branch harus `main`.**
+- **Push/merge ke `main` → deployment Production.** Push ke branch lain (termasuk branch
+  kerja Base44) hanya menjadi deployment **Preview**, jadi situs produksi tidak berubah —
+  ini penyebab tersering keluhan "sudah merge tapi Vercel belum update".
+- `NEXT_PUBLIC_*` dibaca saat **build**: kalau nilainya diubah di Vercel, wajib redeploy
+  Production supaya ikut terpasang. `ADMIN_KEY` & `SUPABASE_SECRET_KEY` cukup saat runtime.
+- Paksa build ulang tanpa commit baru: Vercel → Deployments → deployment teratas → ⋯ → Redeploy.
+- Kalau merge ke `main` tapi situs tetap lama, cek berurutan: (1) Production Branch =
+  `main`, (2) ada/tidaknya baris deployment untuk commit tersebut di tab Deployments,
+  (3) integrasi Git Vercel masih punya akses ke repo ini.
+- Build produksi bisa diuji lokal: `npx next build` — sukses bahkan tanpa env, karena
+  aplikasi punya fallback data statis.
+
 ## Panel admin (`/admin`)
 
 - **Satu kata sandi.** Login di `/admin/login` memakai nilai `ADMIN_KEY`. Sesi = cookie
