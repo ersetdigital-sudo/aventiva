@@ -206,8 +206,7 @@ export function ActivityPanel() {
                       <div className="adm-status">
                         <span className={`st ${STATUS_CLASS[t.status]}`}>{STATUS_LABEL[t.status]}</span>
                         <select
-                          className="adm-sel adm-sel--sm"
-                          style={{ width: 132 }}
+                          className="adm-sel adm-sel--sm adm-sel--status"
                           value={t.status}
                           disabled={busyId === t.id || (overview ? !overview.canWrite : false)}
                           aria-label={`Ubah status ${t.id}`}
