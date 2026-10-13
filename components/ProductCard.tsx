@@ -29,8 +29,10 @@ export function ProductCard({ catKey, idx, item }: { catKey: string; idx: number
 
   const price = item.bill ? (
     <>
-      <div className="pc-price">Cek tagihan</div>
-      <div className="pc-note">Nominal sesuai tagihan</div>
+      <div className="pc-row">
+        <span className="pc-price">Cek tagihan</span>
+      </div>
+      <span className="pc-note">Nominal sesuai tagihan</span>
     </>
   ) : (
     <>
@@ -38,11 +40,11 @@ export function ProductCard({ catKey, idx, item }: { catKey: string; idx: number
         <span className="pc-price">{rp(item.p)}</span>
         {item.o ? <s className="pc-old">{rp(item.o)}</s> : null}
       </div>
-      {item.o && item.o > item.p ? (
-        <span className="pc-save">Hemat {rp(item.o - item.p)}</span>
-      ) : (
-        <span className="pc-save pc-save--ghost">&nbsp;</span>
-      )}
+      <div className="pc-save-line">
+        {item.o && item.o > item.p ? (
+          <span className="pc-save">Hemat {rp(item.o - item.p)}</span>
+        ) : null}
+      </div>
     </>
   );
 
@@ -53,15 +55,17 @@ export function ProductCard({ catKey, idx, item }: { catKey: string; idx: number
           {brandInitial(item.b)}
         </span>
         <span className="pc-op">{item.b}</span>
-        {disc ? <span className="pc-disc">-{disc}%</span> : null}
-        {out ? <span className="pc-disc pc-disc--out">Habis</span> : null}
+        {out ? (
+          <span className="pc-disc pc-disc--out">Habis</span>
+        ) : disc ? (
+          <span className="pc-disc">−{disc}%</span>
+        ) : null}
       </div>
       <h3 className="pc-name">{item.n}</h3>
       <div className="pc-sub">
         {CHECK}
         <span>{item.d}</span>
       </div>
-      <hr className="pc-hr" />
       <div className="pc-pb">{price}</div>
       <button
         type="button"
@@ -86,10 +90,11 @@ export function ProductSkeleton() {
       </div>
       <span className="sk" style={{ width: "75%", height: 20 }} />
       <span className="sk" style={{ width: "60%", height: 12, marginTop: 8 }} />
-      <hr className="pc-hr" />
-      <span className="sk" style={{ width: "55%", height: 22 }} />
-      <span className="sk" style={{ width: "40%", height: 18, marginTop: 8 }} />
-      <span className="sk" style={{ height: 44, marginTop: "auto", borderRadius: 10 }} />
+      <div className="pc-pb">
+        <span className="sk" style={{ width: "55%", height: 22 }} />
+        <span className="sk" style={{ width: "40%", height: 18, marginTop: 10 }} />
+      </div>
+      <span className="sk" style={{ height: 44, marginTop: "auto", borderRadius: 12 }} />
     </div>
   );
 }
