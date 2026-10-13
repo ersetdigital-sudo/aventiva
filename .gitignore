@@ -8,8 +8,13 @@ build/
 .env.local
 .env*.local
 
+# Vercel CLI (berisi ID project & team)
+.vercel/
+
 # OS / editor
 .DS_Store
 Thumbs.db
 *.log
 .playwright-cli/
+.vercel
+.env*
