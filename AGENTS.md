@@ -40,6 +40,12 @@ Catatan setup (hal yang tidak terlihat dari manifest):
   semula (localhost saja). HMR diaktifkan lewat `WATCHPACK_POLLING=true`.
 - **Verifikasi**: healthcheck compose memakai `fetch('http://127.0.0.1:3000/')` (Node 22
   sudah punya `fetch`; image slim tidak punya curl/wget).
+- **Cek UI `/admin` dari browser preview**: navigasi SPA (`navigate`) ke `/admin` tidak
+  merender route-nya di browser otomatis (URL berubah, konten tetap halaman lama), dan
+  `pushState`/`popstate` manual juga tidak memicu router. Render halaman itu di dalam
+  iframe satu layar (`src="/admin"`, cookie sesi ikut terkirim) lalu periksa/screenshot
+  dari `iframe.contentDocument`; klik tab di dalam iframe itu tetap gesture asli.
+  Sesi admin dari preview user dipakai apa adanya — jangan login sendiri.
 
 ## Panel admin (`/admin`)
 
