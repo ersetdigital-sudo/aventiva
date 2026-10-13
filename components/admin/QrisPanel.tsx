@@ -13,6 +13,9 @@ export function QrisPanel() {
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<Status>(null);
   const [ver, setVer] = useState(0);
+  // gambar tersimpan gagal dimuat (belum pernah upload) — pakai state, bukan
+  // mutasi DOM, supaya React tetap memegang kendali atas node di dalam .adm-drop
+  const [broken, setBroken] = useState(false);
 
   const live = supabaseEnabled ? qrisUrl() : "";
   const currentQr = live ? `${live}${live.includes("?") ? "&" : "?"}v=${ver}` : "";
@@ -21,6 +24,11 @@ export function QrisPanel() {
     if (!preview) return;
     return () => URL.revokeObjectURL(preview);
   }, [preview]);
+
+  // setelah upload berhasil (ver berubah), coba muat ulang gambar tersimpan
+  useEffect(() => {
+    setBroken(false);
+  }, [ver]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -65,20 +73,18 @@ export function QrisPanel() {
           {preview ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={preview} alt="Pratinjau QRIS baru" />
-          ) : currentQr ? (
+          ) : currentQr && !broken ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               key={currentQr}
               src={currentQr}
               alt="Gambar QRIS tersimpan"
-              onError={(e) => {
-                e.currentTarget.style.display = "none";
-                const p = e.currentTarget.parentElement;
-                if (p) p.innerHTML = '<span class="adm-drop-note">Belum ada gambar</span>';
-              }}
+              onError={() => setBroken(true)}
             />
           ) : (
-            <span className="adm-drop-note">Supabase belum dikonfigurasi</span>
+            <span className="adm-drop-note">
+              {currentQr ? "Belum ada gambar" : "Supabase belum dikonfigurasi"}
+            </span>
           )}
         </div>
 
