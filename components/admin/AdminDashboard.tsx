@@ -2,14 +2,15 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Icon } from "@/lib/icons";
 import { ActivityPanel } from "./ActivityPanel";
 import { ProductsPanel } from "./ProductsPanel";
 import { QrisPanel } from "./QrisPanel";
 
 const TABS = [
-  { id: "aktivitas", label: "Transaksi & Aktivitas" },
-  { id: "produk", label: "Produk & Harga" },
-  { id: "qris", label: "QRIS & Sistem" },
+  { id: "aktivitas", label: "Transaksi & Aktivitas", icon: "receipt" },
+  { id: "produk", label: "Produk & Harga", icon: "tag" },
+  { id: "qris", label: "QRIS", icon: "wallet" },
 ] as const;
 
 type TabId = (typeof TABS)[number]["id"];
@@ -26,36 +27,42 @@ export function AdminDashboard() {
   }
 
   return (
-    <div className="space-y-5">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-extrabold text-slate-900">Panel Admin</h1>
-          <p className="mt-1 text-sm text-slate-500">
-            Kelola katalog, harga, dan pantau aktivitas transaksi.
-          </p>
+    <div className="adm">
+      <header className="adm-head">
+        <div className="adm-head-main">
+          <span className="adm-kick">
+            <Icon name="lock" width={13} height={13} />
+            Panel internal
+          </span>
+          <h1>Panel Admin</h1>
+          <p>Kelola katalog, harga, dan pantau aktivitas transaksi dari satu tempat.</p>
         </div>
-        <button type="button" className="chip font-medium" onClick={logout}>
+        <button type="button" className="adm-out" onClick={logout}>
+          <Icon name="x" width={16} height={16} />
           Keluar
         </button>
-      </div>
+      </header>
 
-      <div className="noscroll -mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
+      <nav className="adm-tabs" aria-label="Menu panel admin">
         {TABS.map((t) => (
           <button
             key={t.id}
             type="button"
-            className="chip font-medium"
+            className="adm-tab"
             aria-pressed={tab === t.id}
             onClick={() => setTab(t.id)}
           >
+            <Icon name={t.icon} width={16} height={16} />
             {t.label}
           </button>
         ))}
-      </div>
+      </nav>
 
-      {tab === "aktivitas" && <ActivityPanel />}
-      {tab === "produk" && <ProductsPanel />}
-      {tab === "qris" && <QrisPanel />}
+      <div className="adm-body">
+        {tab === "aktivitas" && <ActivityPanel />}
+        {tab === "produk" && <ProductsPanel />}
+        {tab === "qris" && <QrisPanel />}
+      </div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { Icon } from "@/lib/icons";
 import type { AdminCategory, AdminOverview, AdminProduct } from "@/lib/admin-types";
 import { rp } from "@/lib/format";
 
@@ -170,56 +171,83 @@ export function ProductsPanel() {
   const catName = (key: string) => cats.find((c) => c.key === key)?.name ?? key;
 
   return (
-    <div className="space-y-5">
+    <>
       {!canWrite && (
-        <p className="rounded-2xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
-          Kunci rahasia server (<b>SUPABASE_SECRET_KEY</b>) belum diisi, jadi katalog hanya bisa
-          dilihat. Tambahkan kunci itu lewat menu Secrets untuk bisa menyimpan perubahan.
+        <p className="adm-note adm-note--warn">
+          <Icon name="alert" width={18} height={18} />
+          <span>
+            Kunci rahasia server (<b>SUPABASE_SECRET_KEY</b>) belum diisi, jadi katalog hanya bisa
+            dilihat. Tambahkan kunci itu lewat menu Secrets untuk bisa menyimpan perubahan.
+          </span>
         </p>
       )}
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-5">
-        <div className="flex flex-wrap items-center gap-2">
-          <h2 className="mr-auto font-bold text-slate-900">
-            Katalog produk <span className="font-normal text-slate-500">({list.length})</span>
-          </h2>
-          <input
-            className="inp !mt-0 w-[200px] !py-2 text-sm"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Cari produk / brand"
-            aria-label="Cari produk"
-          />
+      <section className="adm-card">
+        <div className="adm-card-head">
+          <div>
+            <h2>
+              Katalog produk <span className="adm-count">({list.length})</span>
+            </h2>
+            <p className="adm-hint">
+              Ubah harga, tandai stok habis, atau tambah produk baru. Perubahan langsung dipakai situs.
+            </p>
+          </div>
           <button
             type="button"
-            className="chip font-medium"
+            className={adding ? "adm-btn" : "adm-btn adm-btn--primary"}
             disabled={!canWrite}
             onClick={() =>
               setAdding(adding ? null : emptyDraft(cat !== "all" ? cat : (cats[0]?.key ?? "")))
             }
           >
-            {adding ? "Batal" : "+ Tambah produk"}
+            <Icon name={adding ? "x" : "tag"} width={16} height={16} />
+            {adding ? "Batal" : "Tambah produk"}
           </button>
         </div>
 
-        <div className="noscroll mt-3 flex gap-2 overflow-x-auto pb-1">
-          <button type="button" className="chip" aria-pressed={cat === "all"} onClick={() => setCat("all")}>
+        <div className="adm-tools">
+          <div className="adm-search">
+            <Icon name="search" width={16} height={16} />
+            <input
+              className="adm-inp"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Cari produk / brand"
+              aria-label="Cari produk"
+            />
+          </div>
+        </div>
+
+        <div className="adm-chips">
+          <button type="button" className="adm-chip" aria-pressed={cat === "all"} onClick={() => setCat("all")}>
             Semua kategori
           </button>
           {cats.map((c) => (
-            <button key={c.key} type="button" className="chip" aria-pressed={cat === c.key} onClick={() => setCat(c.key)}>
+            <button
+              key={c.key}
+              type="button"
+              className="adm-chip"
+              aria-pressed={cat === c.key}
+              onClick={() => setCat(c.key)}
+            >
               {c.name}
             </button>
           ))}
         </div>
 
-        {(msg || error) && (
-          <p className={`mt-3 text-sm ${error ? "text-red-600" : "text-emerald-700"}`}>{error || msg}</p>
-        )}
+        {error || msg ? (
+          <p
+            className={`adm-note ${error ? "adm-note--err" : "adm-note--ok"}`}
+            style={{ marginTop: 12 }}
+          >
+            <Icon name={error ? "alert" : "check"} width={16} height={16} />
+            <span>{error || msg}</span>
+          </p>
+        ) : null}
 
         {adding && (
-          <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <h3 className="font-semibold text-slate-800">Produk baru</h3>
+          <div className="adm-subcard">
+            <h3>Produk baru</h3>
             <ProductFields
               draft={adding}
               cats={cats}
@@ -231,36 +259,36 @@ export function ProductsPanel() {
           </div>
         )}
 
-        <div className="mt-4 overflow-x-auto">
-          <table className="w-full min-w-[720px] text-left text-sm">
+        <div className="adm-tbl">
+          <table>
             <thead>
-              <tr className="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-500">
-                <th className="py-2 pr-3 font-semibold">Produk</th>
-                <th className="py-2 pr-3 font-semibold">Kategori</th>
-                <th className="py-2 pr-3 font-semibold">Harga</th>
-                <th className="py-2 pr-3 font-semibold">Coret</th>
-                <th className="py-2 pr-3 font-semibold">Status</th>
-                <th className="py-2 pr-3 font-semibold">Aksi</th>
+              <tr>
+                <th>Produk</th>
+                <th>Kategori</th>
+                <th>Harga</th>
+                <th>Coret</th>
+                <th>Status</th>
+                <th>Aksi</th>
               </tr>
             </thead>
             <tbody>
               {products === null ? (
                 <tr>
-                  <td className="py-3 text-slate-500" colSpan={6}>
+                  <td className="adm-empty" colSpan={6}>
                     Memuat…
                   </td>
                 </tr>
               ) : list.length === 0 ? (
                 <tr>
-                  <td className="py-3 text-slate-500" colSpan={6}>
+                  <td className="adm-empty" colSpan={6}>
                     Tidak ada produk yang cocok.
                   </td>
                 </tr>
               ) : (
                 list.map((p) =>
                   editing === p.id && draft ? (
-                    <tr key={p.id} className="border-b border-slate-100 bg-slate-50">
-                      <td colSpan={6} className="py-3 pr-3">
+                    <tr key={p.id}>
+                      <td colSpan={6}>
                         <ProductFields
                           draft={draft}
                           cats={cats}
@@ -276,32 +304,32 @@ export function ProductsPanel() {
                       </td>
                     </tr>
                   ) : (
-                    <tr key={p.id} className="border-b border-slate-100 last:border-0">
-                      <td className="py-3 pr-3">
-                        <span className="font-medium text-slate-800">{p.n}</span>
-                        <span className="block text-xs text-slate-500">
+                    <tr key={p.id}>
+                      <td data-label="Produk">
+                        <span className="adm-strong">{p.n}</span>
+                        <span className="adm-muted" style={{ display: "block" }}>
                           {[p.b, p.f, p.d].filter(Boolean).join(" · ")}
                         </span>
                       </td>
-                      <td className="py-3 pr-3 text-slate-700">{catName(p.cat_key)}</td>
-                      <td className="py-3 pr-3 whitespace-nowrap font-semibold text-slate-800">
-                        {p.bill ? "Sesuai tagihan" : rp(p.p)}
+                      <td data-label="Kategori">{catName(p.cat_key)}</td>
+                      <td data-label="Harga" className="nowrap">
+                        <span className="adm-strong">{p.bill ? "Sesuai tagihan" : rp(p.p)}</span>
                       </td>
-                      <td className="py-3 pr-3 whitespace-nowrap text-slate-500">
-                        {p.o === null ? "—" : rp(p.o)}
+                      <td data-label="Coret" className="nowrap">
+                        <span className="adm-muted">{p.o === null ? "—" : rp(p.o)}</span>
                       </td>
-                      <td className="py-3 pr-3">
+                      <td data-label="Status">
                         {p.soldout ? (
-                          <span className="st st-failed whitespace-nowrap">Habis</span>
+                          <span className="st st-failed">Habis</span>
                         ) : (
-                          <span className="st st-success whitespace-nowrap">Tersedia</span>
+                          <span className="st st-success">Tersedia</span>
                         )}
                       </td>
-                      <td className="py-3 pr-3">
-                        <div className="flex gap-2">
+                      <td data-label="Aksi" className="adm-td-act">
+                        <div className="adm-actions">
                           <button
                             type="button"
-                            className="chip"
+                            className="adm-btn adm-btn--sm"
                             disabled={!canWrite}
                             onClick={() => {
                               setEditing(p.id);
@@ -312,7 +340,7 @@ export function ProductsPanel() {
                           </button>
                           <button
                             type="button"
-                            className="chip text-red-600"
+                            className="adm-btn adm-btn--sm adm-btn--danger"
                             disabled={!canWrite}
                             onClick={() => void remove(p)}
                           >
@@ -328,7 +356,7 @@ export function ProductsPanel() {
           </table>
         </div>
       </section>
-    </div>
+    </>
   );
 }
 
@@ -355,15 +383,16 @@ function ProductFields({
 
   return (
     <form
-      className="mt-3 grid gap-3 sm:grid-cols-2"
+      className="adm-form"
+      style={{ marginTop: 14 }}
       onSubmit={(e) => {
         e.preventDefault();
         onSubmit();
       }}
     >
-      <label className="text-xs font-medium text-slate-600">
-        Kategori
-        <select className="inp !py-2 text-sm" value={draft.cat_key} onChange={(e) => set({ cat_key: e.target.value })}>
+      <label className="adm-field">
+        <span className="adm-lbl">Kategori</span>
+        <select className="adm-sel" value={draft.cat_key} onChange={(e) => set({ cat_key: e.target.value })}>
           {cats.map((c) => (
             <option key={c.key} value={c.key}>
               {c.name}
@@ -371,61 +400,61 @@ function ProductFields({
           ))}
         </select>
       </label>
-      <label className="text-xs font-medium text-slate-600">
-        Nama produk
-        <input className="inp !py-2 text-sm" value={draft.n} onChange={(e) => set({ n: e.target.value })} required />
+      <label className="adm-field">
+        <span className="adm-lbl">Nama produk</span>
+        <input className="adm-inp" value={draft.n} onChange={(e) => set({ n: e.target.value })} required />
       </label>
-      <label className="text-xs font-medium text-slate-600">
-        Brand / penyedia
-        <input className="inp !py-2 text-sm" value={draft.b} onChange={(e) => set({ b: e.target.value })} />
+      <label className="adm-field">
+        <span className="adm-lbl">Brand / penyedia</span>
+        <input className="adm-inp" value={draft.b} onChange={(e) => set({ b: e.target.value })} />
       </label>
-      <label className="text-xs font-medium text-slate-600">
-        Filter (sub-kategori)
-        <input className="inp !py-2 text-sm" value={draft.f} onChange={(e) => set({ f: e.target.value })} />
+      <label className="adm-field">
+        <span className="adm-lbl">Filter (sub-kategori)</span>
+        <input className="adm-inp" value={draft.f} onChange={(e) => set({ f: e.target.value })} />
       </label>
-      <label className="text-xs font-medium text-slate-600">
-        Harga jual (Rp)
+      <label className="adm-field">
+        <span className="adm-lbl">Harga jual (Rp)</span>
         <input
-          className="inp !py-2 text-sm"
+          className="adm-inp"
           type="number"
           min={0}
+          inputMode="numeric"
           value={draft.p}
           onChange={(e) => set({ p: e.target.value })}
         />
       </label>
-      <label className="text-xs font-medium text-slate-600">
-        Harga coret (opsional)
+      <label className="adm-field">
+        <span className="adm-lbl">Harga coret (opsional)</span>
         <input
-          className="inp !py-2 text-sm"
+          className="adm-inp"
           type="number"
           min={0}
+          inputMode="numeric"
           value={draft.o}
           onChange={(e) => set({ o: e.target.value })}
         />
       </label>
-      <label className="text-xs font-medium text-slate-600 sm:col-span-2">
-        Keterangan singkat
-        <input className="inp !py-2 text-sm" value={draft.d} onChange={(e) => set({ d: e.target.value })} />
+      <label className="adm-field span2">
+        <span className="adm-lbl">Keterangan singkat</span>
+        <input className="adm-inp" value={draft.d} onChange={(e) => set({ d: e.target.value })} />
       </label>
-      <div className="flex flex-wrap items-center gap-4 text-sm text-slate-700 sm:col-span-2">
-        <label className="flex items-center gap-2">
+      <div className="adm-checks span2">
+        <label className="adm-check">
           <input type="checkbox" checked={draft.bill} onChange={(e) => set({ bill: e.target.checked })} />
           Produk tagihan (harga dicek saat bayar)
         </label>
-        <label className="flex items-center gap-2">
+        <label className="adm-check">
           <input type="checkbox" checked={draft.soldout} onChange={(e) => set({ soldout: e.target.checked })} />
           Stok habis
         </label>
-        {activeCat ? (
-          <span className="text-xs text-slate-500">Biaya admin kategori: {rp(activeCat.admin)}</span>
-        ) : null}
+        {activeCat ? <span className="adm-muted">Biaya admin kategori: {rp(activeCat.admin)}</span> : null}
       </div>
-      <div className="flex gap-2 sm:col-span-2">
-        <button type="submit" className="btn-primary !py-2 text-sm disabled:opacity-60" disabled={busy}>
+      <div className="adm-actions span2">
+        <button type="submit" className="adm-btn adm-btn--primary" disabled={busy}>
           {busy ? "Menyimpan…" : submitLabel}
         </button>
         {onCancel && (
-          <button type="button" className="chip font-medium" onClick={onCancel}>
+          <button type="button" className="adm-btn" onClick={onCancel}>
             Batal
           </button>
         )}

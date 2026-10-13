@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { Icon } from "@/lib/icons";
 import { STATUS_CLASS, STATUS_LABEL, STATUS_ORDER, type AdminOverview, type AdminTransaction } from "@/lib/admin-types";
 import { fmtDate, rp } from "@/lib/format";
 import type { Status } from "@/lib/tx-types";
@@ -67,126 +68,146 @@ export function ActivityPanel() {
 
   const stats = overview?.stats ?? null;
   const cards = [
-    { label: "Total transaksi", value: stats ? String(stats.total) : "—" },
-    { label: "Nilai berhasil", value: stats ? rp(stats.revenue) : "—" },
-    { label: "Hari ini", value: stats ? String(stats.today) : "—" },
-    { label: "7 hari terakhir", value: stats ? String(stats.last7) : "—" },
+    { label: "Total transaksi", value: stats ? String(stats.total) : "—", icon: "receipt", hi: false },
+    { label: "Nilai berhasil", value: stats ? rp(stats.revenue) : "—", icon: "wallet", hi: true },
+    { label: "Hari ini", value: stats ? String(stats.today) : "—", icon: "clock", hi: false },
+    { label: "7 hari terakhir", value: stats ? String(stats.last7) : "—", icon: "check", hi: false },
   ];
 
   return (
-    <div className="space-y-5">
+    <>
       {overview && !overview.canWrite && (
-        <p className="rounded-2xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
-          Kunci rahasia server (<b>SUPABASE_SECRET_KEY</b>) belum diisi, jadi perubahan status
-          belum bisa disimpan. Tambahkan kunci itu lewat menu Secrets untuk mengaktifkan.
+        <p className="adm-note adm-note--warn">
+          <Icon name="alert" width={18} height={18} />
+          <span>
+            Kunci rahasia server (<b>SUPABASE_SECRET_KEY</b>) belum diisi, jadi perubahan status belum
+            bisa disimpan. Tambahkan kunci itu lewat menu Secrets untuk mengaktifkan.
+          </span>
         </p>
       )}
 
-      <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="adm-stats" aria-label="Ringkasan transaksi">
         {cards.map((c) => (
-          <div key={c.label} className="rounded-2xl border border-slate-200 bg-white p-4">
-            <p className="text-xs font-medium text-slate-500">{c.label}</p>
-            <p className="mt-1 text-xl font-extrabold text-slate-900">{c.value}</p>
-          </div>
+          <article key={c.label} className={`adm-stat${c.hi ? " adm-stat--hi" : ""}`}>
+            <i>
+              <Icon name={c.icon} width={18} height={18} />
+            </i>
+            <b>{c.value}</b>
+            <span>{c.label}</span>
+          </article>
         ))}
       </section>
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-5">
-        <div className="flex flex-wrap items-center gap-2">
-          <h2 className="mr-auto font-bold text-slate-900">Daftar transaksi</h2>
-          <form
-            className="flex items-center gap-2"
-            onSubmit={(e) => {
-              e.preventDefault();
-              setQuery(search.trim());
-            }}
-          >
+      <section className="adm-card">
+        <div className="adm-card-head">
+          <div>
+            <h2>Daftar transaksi</h2>
+            <p className="adm-hint">Terbaru di atas (maks. 100 baris). Status bisa diubah langsung dari barisnya.</p>
+          </div>
+          <span className="adm-badge">{txs === null ? "Memuat…" : `${txs.length} baris`}</span>
+        </div>
+
+        <form
+          className="adm-tools"
+          onSubmit={(e) => {
+            e.preventDefault();
+            setQuery(search.trim());
+          }}
+        >
+          <div className="adm-search">
+            <Icon name="search" width={16} height={16} />
             <input
-              className="inp !mt-0 w-[200px] !py-2 text-sm"
+              className="adm-inp"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Cari ID / nomor tujuan"
               aria-label="Cari transaksi"
             />
-            <button type="submit" className="chip font-medium">
-              Cari
+          </div>
+          <button type="submit" className="adm-btn adm-btn--primary">
+            Cari
+          </button>
+          {query && (
+            <button
+              type="button"
+              className="adm-btn"
+              onClick={() => {
+                setSearch("");
+                setQuery("");
+              }}
+            >
+              Reset
             </button>
-            {query && (
-              <button
-                type="button"
-                className="chip font-medium"
-                onClick={() => {
-                  setSearch("");
-                  setQuery("");
-                }}
-              >
-                Reset
-              </button>
-            )}
-          </form>
-        </div>
+          )}
+        </form>
 
-        <div className="noscroll mt-4 flex gap-2 overflow-x-auto pb-1">
-          <button type="button" className="chip" aria-pressed={filter === "all"} onClick={() => setFilter("all")}>
+        <div className="adm-chips">
+          <button type="button" className="adm-chip" aria-pressed={filter === "all"} onClick={() => setFilter("all")}>
             Semua
           </button>
           {STATUS_ORDER.map((s) => (
-            <button key={s} type="button" className="chip" aria-pressed={filter === s} onClick={() => setFilter(s)}>
+            <button key={s} type="button" className="adm-chip" aria-pressed={filter === s} onClick={() => setFilter(s)}>
               {STATUS_LABEL[s]}
               {stats ? ` · ${stats.byStatus[s]}` : ""}
             </button>
           ))}
         </div>
 
-        {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+        {error && (
+          <p className="adm-note adm-note--err" style={{ marginTop: 12 }}>
+            <Icon name="alert" width={16} height={16} />
+            <span>{error}</span>
+          </p>
+        )}
 
-        <div className="mt-4 overflow-x-auto">
-          <table className="w-full min-w-[680px] text-left text-sm">
+        <div className="adm-tbl">
+          <table>
             <thead>
-              <tr className="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-500">
-                <th className="py-2 pr-3 font-semibold">ID</th>
-                <th className="py-2 pr-3 font-semibold">Produk</th>
-                <th className="py-2 pr-3 font-semibold">Tujuan</th>
-                <th className="py-2 pr-3 font-semibold">Nominal</th>
-                <th className="py-2 pr-3 font-semibold">Waktu</th>
-                <th className="py-2 pr-3 font-semibold">Status</th>
+              <tr>
+                <th>ID</th>
+                <th>Produk</th>
+                <th>Tujuan</th>
+                <th>Nominal</th>
+                <th>Waktu</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
               {txs === null ? (
                 <tr>
-                  <td className="py-3 text-slate-500" colSpan={6}>
+                  <td className="adm-empty" colSpan={6}>
                     Memuat…
                   </td>
                 </tr>
               ) : txs.length === 0 ? (
                 <tr>
-                  <td className="py-3 text-slate-500" colSpan={6}>
+                  <td className="adm-empty" colSpan={6}>
                     Tidak ada transaksi pada filter ini.
                   </td>
                 </tr>
               ) : (
                 txs.map((t) => (
-                  <tr key={t.id} className="border-b border-slate-100 last:border-0">
-                    <td className="py-3 pr-3 font-mono text-xs text-slate-700">{t.id}</td>
-                    <td className="py-3 pr-3">
-                      <span className="font-medium text-slate-800">{t.name}</span>
-                      {t.payment_method ? (
-                        <span className="ml-2 text-xs text-slate-500">· {t.payment_method}</span>
-                      ) : null}
+                  <tr key={t.id}>
+                    <td data-label="ID">
+                      <span className="adm-mono">{t.id}</span>
                     </td>
-                    <td className="py-3 pr-3 text-slate-700">{t.target}</td>
-                    <td className="py-3 pr-3 whitespace-nowrap text-slate-700">{rp(t.amount)}</td>
-                    <td className="py-3 pr-3 whitespace-nowrap text-xs text-slate-500">
-                      {fmtDate(Date.parse(t.created_at))}
+                    <td data-label="Produk">
+                      <span className="adm-strong">{t.name}</span>
+                      {t.payment_method ? <span className="adm-muted"> · {t.payment_method}</span> : null}
                     </td>
-                    <td className="py-3 pr-3">
-                      <div className="flex items-center gap-2">
-                        <span className={`st ${STATUS_CLASS[t.status]} whitespace-nowrap`}>
-                          {STATUS_LABEL[t.status]}
-                        </span>
+                    <td data-label="Tujuan">{t.target}</td>
+                    <td data-label="Nominal" className="nowrap">
+                      <span className="adm-strong">{rp(t.amount)}</span>
+                    </td>
+                    <td data-label="Waktu" className="nowrap">
+                      <span className="adm-muted">{fmtDate(Date.parse(t.created_at))}</span>
+                    </td>
+                    <td data-label="Status" className="adm-td-act">
+                      <div className="adm-status">
+                        <span className={`st ${STATUS_CLASS[t.status]}`}>{STATUS_LABEL[t.status]}</span>
                         <select
-                          className="inp !mt-0 !w-[132px] !py-1 text-xs"
+                          className="adm-sel adm-sel--sm"
+                          style={{ width: 132 }}
                           value={t.status}
                           disabled={busyId === t.id || (overview ? !overview.canWrite : false)}
                           aria-label={`Ubah status ${t.id}`}
@@ -207,6 +228,6 @@ export function ActivityPanel() {
           </table>
         </div>
       </section>
-    </div>
+    </>
   );
 }
