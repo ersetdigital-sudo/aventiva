@@ -49,5 +49,6 @@ export async function isAdmin(): Promise<boolean> {
   const token = sessionToken();
   if (!token) return false;
   const value = (await cookies()).get(ADMIN_COOKIE)?.value;
-  return Boolean(value) && safeEqual(value, token);
+  if (!value) return false;
+  return safeEqual(value, token);
 }
