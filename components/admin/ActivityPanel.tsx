@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Icon } from "@/lib/icons";
-import { STATUS_LABEL, STATUS_ORDER, type AdminOverview, type AdminTransaction } from "@/lib/admin-types";
+import { STATUS_CLASS, STATUS_LABEL, STATUS_ORDER, type AdminOverview, type AdminTransaction } from "@/lib/admin-types";
 import { fmtDate, rp } from "@/lib/format";
 import type { Status } from "@/lib/tx-types";
 
@@ -204,7 +204,7 @@ export function ActivityPanel() {
                     </td>
                     <td data-label="Status" className="adm-td-act">
                       <select
-                        className="adm-sel adm-sel--sm adm-sel--status"
+                        className={`adm-sel adm-sel--sm adm-sel--status ${STATUS_CLASS[t.status]}`}
                         value={t.status}
                         disabled={busyId === t.id || (overview ? !overview.canWrite : false)}
                         aria-label={`Ubah status ${t.id}`}

@@ -396,8 +396,14 @@ dialog::backdrop{background:rgba(15,23,42,.5)}
 .adm-tbl .adm-muted{font-size:12.5px;font-weight:500;color:#6B7280;font-variant-numeric:tabular-nums}
 .adm-tbl .adm-mono{display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;letter-spacing:-.01em;color:#3F3F6B;background:#F6F6FB;border:1px solid #ECECF4;border-radius:8px;padding:3px 8px;white-space:nowrap}
 .adm-empty{padding:20px 16px;font-size:13.5px;font-weight:500;color:#6B7280}
-/* Kolom STATUS: hanya dropdown (badge warna dihapus agar tidak dobel). */
-.adm-sel--status{width:176px;font-size:12px;font-weight:700}
+/* Kolom STATUS: satu dropdown bergaya modern — warna status jadi tint latarnya, chevron sendiri. */
+.adm-sel--status{height:40px;min-width:200px;padding:0 32px 0 14px;border:1.5px solid #E5E7F0;border-radius:12px;font-size:12.5px;font-weight:700;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'><path d='M1 1.5L6 6.5L11 1.5' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");background-repeat:no-repeat;background-position:right 13px center}
+.adm-sel--status:hover{border-color:#C6C6D8}
+.adm-sel--status.st-pending{background-color:#FFF8EA;border-color:#FBE2AE;color:#92400E}
+.adm-sel--status.st-process{background-color:#EFF5FF;border-color:#CFE0FB;color:#1E40AF}
+.adm-sel--status.st-success{background-color:#F0FBF3;border-color:#C6EFD4;color:#166534}
+.adm-sel--status.st-failed{background-color:#FEF3F3;border-color:#FBD5D5;color:#B91C1C}
+.adm-sel--status.st-expired{background-color:#F5F5F9;border-color:#E3E3EC;color:#4B5563}
 .adm-avatarbox{display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:#EEF0FF;color:#4338CA;font-size:12px;font-weight:800}
 @media(min-width:640px){.adm-form{grid-template-columns:1fr 1fr}}
 @media(min-width:900px){.adm-stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
@@ -425,10 +431,12 @@ dialog::backdrop{background:rgba(15,23,42,.5)}
  .adm-tbl tbody td:first-child .adm-strong{font-size:14px}
  .adm-tbl tbody td.adm-td-act{flex-direction:column;align-items:stretch;gap:8px;padding-top:12px}
  .adm-tbl tbody td.adm-td-act::before{align-self:flex-start}
- .adm-tbl tbody td.adm-td-act .adm-sel--status{width:100%}
  .adm-tbl .adm-actions>.adm-btn{flex:1 1 auto}
  .adm-tbl .adm-mono{font-size:12.5px}
  .adm-empty{padding:4px 0;text-align:left}
+ /* Tab jadi segmented control 3 kolom: tidak ada geser samping, ikon di atas label. */
+ .adm-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:5px;border-radius:18px;overflow:visible}
+ .adm-tab{flex-direction:column;gap:5px;height:auto;min-height:52px;padding:7px 6px;border-radius:14px;font-size:11.5px;font-weight:700;line-height:1.25;white-space:normal;text-align:center}
 }
 @media(max-width:767px){
  .adm-head{padding:18px;border-radius:16px}
@@ -436,7 +444,6 @@ dialog::backdrop{background:rgba(15,23,42,.5)}
  .adm-head p{font-size:12.5px}
  .adm-out{width:100%}
  .adm-card{padding:16px;border-radius:16px}
- .adm-tab{height:38px;padding:0 14px;font-size:13.5px}
  .adm-drop{width:100%;height:200px}
  .adm-search{flex:0 1 100%}
  .adm-qris{gap:14px}
