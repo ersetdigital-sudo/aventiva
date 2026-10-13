@@ -1,0 +1,364 @@
+- generic [active] [ref=e1]:
+  - link "Lompat ke konten utama" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - link "aventiva." [ref=e6] [cursor=pointer]:
+          - /url: /
+        - search [ref=e8]:
+          - textbox "Cari produk" [ref=e13]:
+            - /placeholder: Cari pulsa, kuota, token PLN, BPJS…
+          - button "Cari" [ref=e14]
+        - generic [ref=e15]:
+          - link "Cek Transaksi" [ref=e16] [cursor=pointer]:
+            - /url: /cek-transaksi
+          - link "Bantuan" [ref=e21] [cursor=pointer]:
+            - /url: /bantuan
+      - navigation "Kategori produk" [ref=e26]:
+        - link "Pulsa" [ref=e27] [cursor=pointer]:
+          - /url: /layanan?c=pulsa
+        - link "Paket Data" [ref=e31] [cursor=pointer]:
+          - /url: /layanan?c=data
+        - link "Token PLN" [ref=e35] [cursor=pointer]:
+          - /url: /layanan?c=pln
+        - link "E-Wallet" [ref=e39] [cursor=pointer]:
+          - /url: /layanan?c=ewallet
+        - link "Internet" [ref=e44] [cursor=pointer]:
+          - /url: /layanan?c=internet
+        - link "BPJS" [ref=e49] [cursor=pointer]:
+          - /url: /layanan?c=bpjs
+        - link "PDAM" [ref=e54] [cursor=pointer]:
+          - /url: /layanan?c=pdam
+        - link "Multifinance" [ref=e58] [cursor=pointer]:
+          - /url: /layanan?c=finance
+  - main [ref=e64]:
+    - generic [ref=e65]:
+      - generic [ref=e66]:
+        - paragraph [ref=e71]: Digital transactions. Simplified.
+        - heading "Isi pulsa, kuota & bayar tagihan dalam satu tempat" [level=1] [ref=e72]
+        - paragraph [ref=e73]: Harga jelas, biaya admin terlihat sebelum bayar, dan status transaksi bisa dipantau.
+        - link "Belanja Sekarang" [ref=e74] [cursor=pointer]:
+          - /url: /layanan
+      - generic [ref=e75]:
+        - link "Token PLN Mulai 20rb, token langsung dikirim" [ref=e76] [cursor=pointer]:
+          - /url: /layanan?c=pln
+          - generic [ref=e80]: Token PLN
+          - generic [ref=e81]: Mulai 20rb, token langsung dikirim
+        - link "Top Up E-Wallet GoPay, OVO, DANA, ShopeePay" [ref=e82] [cursor=pointer]:
+          - /url: /layanan?c=ewallet
+          - generic [ref=e87]: Top Up E-Wallet
+          - generic [ref=e88]: GoPay, OVO, DANA, ShopeePay
+    - generic [ref=e89]:
+      - heading "Kategori" [level=2] [ref=e90]
+      - generic [ref=e91]:
+        - link [ref=e92] [cursor=pointer]:
+          - /url: /layanan?c=pulsa
+        - link [ref=e96] [cursor=pointer]:
+          - /url: /layanan?c=data
+        - link [ref=e100] [cursor=pointer]:
+          - /url: /layanan?c=pln
+        - link [ref=e104] [cursor=pointer]:
+          - /url: /layanan?c=ewallet
+        - link [ref=e109] [cursor=pointer]:
+          - /url: /layanan?c=internet
+        - link [ref=e114] [cursor=pointer]:
+          - /url: /layanan?c=bpjs
+        - link [ref=e119] [cursor=pointer]:
+          - /url: /layanan?c=pdam
+        - link [ref=e123] [cursor=pointer]:
+          - /url: /layanan?c=finance
+    - generic [ref=e129]:
+      - generic [ref=e130]:
+        - heading "Pilihan Untukmu" [level=2] [ref=e131]
+        - link "Lihat semua →" [ref=e132] [cursor=pointer]:
+          - /url: /layanan
+      - tablist [ref=e133]:
+        - tab "Pulsa" [selected] [ref=e134]
+        - tab "Paket Data" [ref=e135]
+        - tab "Token PLN" [ref=e136]
+        - tab "E-Wallet" [ref=e137]
+      - generic [ref=e138]:
+        - article [ref=e139]:
+          - generic [ref=e140]:
+            - generic [ref=e141]: TS
+            - generic [ref=e142]: Telkomsel
+            - generic [ref=e143]: "-19%"
+          - heading "Pulsa 5.000" [level=3] [ref=e144]
+          - generic [ref=e145]: Masa aktif ikut operator
+          - separator [ref=e149]
+          - generic [ref=e150]:
+            - generic [ref=e151]:
+              - generic [ref=e152]: Rp6.500
+              - generic [ref=e153]: Rp8.000
+            - generic [ref=e154]: Hemat Rp1.500
+          - button "Beli" [ref=e155]
+        - article [ref=e156]:
+          - generic [ref=e157]:
+            - generic [ref=e158]: "3"
+            - generic [ref=e159]: Tri
+            - generic [ref=e160]: "-9%"
+            - generic [ref=e161]: Habis
+          - heading "Pulsa 5.000" [level=3] [ref=e162]
+          - generic [ref=e163]: Masa aktif ikut operator
+          - separator [ref=e167]
+          - generic [ref=e168]:
+            - generic [ref=e169]:
+              - generic [ref=e170]: Rp7.250
+              - generic [ref=e171]: Rp8.000
+            - generic [ref=e172]: Hemat Rp750
+          - button "Stok habis" [disabled] [ref=e173]
+        - article [ref=e174]:
+          - generic [ref=e175]:
+            - generic [ref=e176]: IM3
+            - generic [ref=e177]: Indosat
+            - generic [ref=e178]: "-10%"
+          - heading "Pulsa 10.000" [level=3] [ref=e179]
+          - generic [ref=e180]: Masa aktif ikut operator
+          - separator [ref=e184]
+          - generic [ref=e185]:
+            - generic [ref=e186]:
+              - generic [ref=e187]: Rp11.750
+              - generic [ref=e188]: Rp13.000
+            - generic [ref=e189]: Hemat Rp1.250
+          - button "Beli" [ref=e190]
+        - article [ref=e191]:
+          - generic [ref=e192]:
+            - generic [ref=e193]: SF
+            - generic [ref=e194]: Smartfren
+            - generic [ref=e195]: "-4%"
+          - heading "Pulsa 10.000" [level=3] [ref=e196]
+          - generic [ref=e197]: Masa aktif ikut operator
+          - separator [ref=e201]
+          - generic [ref=e202]:
+            - generic [ref=e203]:
+              - generic [ref=e204]: Rp12.500
+              - generic [ref=e205]: Rp13.000
+            - generic [ref=e206]: Hemat Rp500
+          - button "Beli" [ref=e207]
+        - article [ref=e208]:
+          - generic [ref=e209]:
+            - generic [ref=e210]: XL
+            - generic [ref=e211]: XL
+            - generic [ref=e212]: "-4%"
+          - heading "Pulsa 20.000" [level=3] [ref=e213]
+          - generic [ref=e214]: Masa aktif ikut operator
+          - separator [ref=e218]
+          - generic [ref=e219]:
+            - generic [ref=e220]:
+              - generic [ref=e221]: Rp22.000
+              - generic [ref=e222]: Rp23.000
+            - generic [ref=e223]: Hemat Rp1.000
+          - button "Beli" [ref=e224]
+        - article [ref=e225]:
+          - generic [ref=e226]:
+            - generic [ref=e227]: TS
+            - generic [ref=e228]: Telkomsel
+            - generic [ref=e229]: "-5%"
+          - heading "Pulsa 25.000" [level=3] [ref=e230]
+          - generic [ref=e231]: Masa aktif ikut operator
+          - separator [ref=e235]
+          - generic [ref=e236]:
+            - generic [ref=e237]:
+              - generic [ref=e238]: Rp26.500
+              - generic [ref=e239]: Rp28.000
+            - generic [ref=e240]: Hemat Rp1.500
+          - button "Beli" [ref=e241]
+        - article [ref=e242]:
+          - generic [ref=e243]:
+            - generic [ref=e244]: "3"
+            - generic [ref=e245]: Tri
+            - generic [ref=e246]: "-3%"
+          - heading "Pulsa 25.000" [level=3] [ref=e247]
+          - generic [ref=e248]: Masa aktif ikut operator
+          - separator [ref=e252]
+          - generic [ref=e253]:
+            - generic [ref=e254]:
+              - generic [ref=e255]: Rp27.250
+              - generic [ref=e256]: Rp28.000
+            - generic [ref=e257]: Hemat Rp750
+          - button "Beli" [ref=e258]
+        - article [ref=e259]:
+          - generic [ref=e260]:
+            - generic [ref=e261]: IM3
+            - generic [ref=e262]: Indosat
+            - generic [ref=e263]: "-2%"
+          - heading "Pulsa 50.000" [level=3] [ref=e264]
+          - generic [ref=e265]: Masa aktif ikut operator
+          - separator [ref=e269]
+          - generic [ref=e270]:
+            - generic [ref=e271]:
+              - generic [ref=e272]: Rp51.750
+              - generic [ref=e273]: Rp53.000
+            - generic [ref=e274]: Hemat Rp1.250
+          - button "Beli" [ref=e275]
+        - article [ref=e276]:
+          - generic [ref=e277]:
+            - generic [ref=e278]: SF
+            - generic [ref=e279]: Smartfren
+            - generic [ref=e280]: "-1%"
+          - heading "Pulsa 50.000" [level=3] [ref=e281]
+          - generic [ref=e282]: Masa aktif ikut operator
+          - separator [ref=e286]
+          - generic [ref=e287]:
+            - generic [ref=e288]:
+              - generic [ref=e289]: Rp52.500
+              - generic [ref=e290]: Rp53.000
+            - generic [ref=e291]: Hemat Rp500
+          - button "Beli" [ref=e292]
+        - article [ref=e293]:
+          - generic [ref=e294]:
+            - generic [ref=e295]: XL
+            - generic [ref=e296]: XL
+            - generic [ref=e297]: "-1%"
+          - heading "Pulsa 100.000" [level=3] [ref=e298]
+          - generic [ref=e299]: Masa aktif ikut operator
+          - separator [ref=e303]
+          - generic [ref=e304]:
+            - generic [ref=e305]:
+              - generic [ref=e306]: Rp102.000
+              - generic [ref=e307]: Rp103.000
+            - generic [ref=e308]: Hemat Rp1.000
+          - button "Beli" [ref=e309]
+    - generic [ref=e310]:
+      - heading "Kenapa membeli di Aventiva" [level=2] [ref=e311]
+      - generic [ref=e317]:
+        - heading "Harga transparan" [level=3] [ref=e318]
+        - paragraph [ref=e319]: Harga & biaya admin ditampilkan terpisah sebelum checkout.
+      - generic [ref=e325]:
+        - heading "Status jelas" [level=3] [ref=e326]
+        - paragraph [ref=e327]: Setiap pesanan punya nomor referensi untuk dipantau.
+      - generic [ref=e332]:
+        - heading "Bantuan siap" [level=3] [ref=e333]
+        - paragraph [ref=e334]: Ada kendala? Hubungi tim kami dengan nomor referensi.
+    - generic [ref=e335]:
+      - heading "Cara Belanja" [level=2] [ref=e336]
+      - generic [ref=e337]:
+        - generic [ref=e338]:
+          - generic [ref=e339]: "1"
+          - generic [ref=e340]:
+            - heading "Pilih produk" [level=3] [ref=e341]
+            - paragraph [ref=e342]: Cari atau pilih dari kategori.
+        - generic [ref=e343]:
+          - generic [ref=e344]: "2"
+          - generic [ref=e345]:
+            - heading "Masukkan nomor" [level=3] [ref=e346]
+            - paragraph [ref=e347]: Isi nomor tujuan, cek total, lalu beli.
+        - generic [ref=e348]:
+          - generic [ref=e349]: "3"
+          - generic [ref=e350]:
+            - heading "Checkout & selesai" [level=3] [ref=e351]
+            - paragraph [ref=e352]: Bayar dan pantau status pesanan.
+  - contentinfo [ref=e353]:
+    - generic [ref=e355]:
+      - generic [ref=e361]:
+        - generic [ref=e362]: Harga Transparan
+        - paragraph [ref=e363]: Biaya admin terlihat sebelum bayar
+      - generic [ref=e368]:
+        - generic [ref=e369]: Transaksi Cepat
+        - paragraph [ref=e370]: Proses otomatis 24/7
+      - generic [ref=e376]:
+        - generic [ref=e377]: Pembayaran Aman
+        - paragraph [ref=e378]: Berbagai metode pembayaran resmi
+    - generic [ref=e379]:
+      - generic [ref=e380]:
+        - link "aventiva." [ref=e381] [cursor=pointer]:
+          - /url: /
+        - paragraph [ref=e382]: Platform pembelian pulsa, paket data, token PLN, e-wallet, dan pembayaran tagihan dengan harga jelas dan proses otomatis.
+        - generic [ref=e383]:
+          - link "Instagram" [ref=e384] [cursor=pointer]:
+            - /url: "#"
+          - link "Facebook" [ref=e388] [cursor=pointer]:
+            - /url: "#"
+          - link "TikTok" [ref=e391] [cursor=pointer]:
+            - /url: "#"
+          - link "WhatsApp" [ref=e395] [cursor=pointer]:
+            - /url: https://wa.me/6281200000000
+      - generic [ref=e399]:
+        - button "Produk" [ref=e400]
+        - list [ref=e401]:
+          - listitem [ref=e402]:
+            - link "Pulsa" [ref=e403] [cursor=pointer]:
+              - /url: /layanan?c=pulsa
+          - listitem [ref=e404]:
+            - link "Paket Data" [ref=e405] [cursor=pointer]:
+              - /url: /layanan?c=data
+          - listitem [ref=e406]:
+            - link "Token PLN" [ref=e407] [cursor=pointer]:
+              - /url: /layanan?c=pln
+          - listitem [ref=e408]:
+            - link "E-Wallet" [ref=e409] [cursor=pointer]:
+              - /url: /layanan?c=ewallet
+          - listitem [ref=e410]:
+            - link "Internet" [ref=e411] [cursor=pointer]:
+              - /url: /layanan?c=internet
+          - listitem [ref=e412]:
+            - link "BPJS" [ref=e413] [cursor=pointer]:
+              - /url: /layanan?c=bpjs
+          - listitem [ref=e414]:
+            - link "PDAM" [ref=e415] [cursor=pointer]:
+              - /url: /layanan?c=pdam
+          - listitem [ref=e416]:
+            - link "Multifinance" [ref=e417] [cursor=pointer]:
+              - /url: /layanan?c=finance
+      - generic [ref=e418]:
+        - button "Bantuan" [ref=e419]
+        - list [ref=e420]:
+          - listitem [ref=e421]:
+            - link "Cara Transaksi" [ref=e422] [cursor=pointer]:
+              - /url: /bantuan?k=cara
+          - listitem [ref=e423]:
+            - link "Cek Transaksi" [ref=e424] [cursor=pointer]:
+              - /url: /cek-transaksi
+          - listitem [ref=e425]:
+            - link "FAQ" [ref=e426] [cursor=pointer]:
+              - /url: /bantuan#faq
+          - listitem [ref=e427]:
+            - link "Hubungi Kami" [ref=e428] [cursor=pointer]:
+              - /url: /bantuan#kontak
+          - listitem [ref=e429]:
+            - link "Pusat Bantuan" [ref=e430] [cursor=pointer]:
+              - /url: /bantuan
+      - generic [ref=e431]:
+        - button "Perusahaan" [ref=e432]
+        - list [ref=e433]:
+          - listitem [ref=e434]:
+            - link "Tentang Kami" [ref=e435] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e436]:
+            - link "Syarat & Ketentuan" [ref=e437] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e438]:
+            - link "Kebijakan Privasi" [ref=e439] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e440]:
+            - link "Kemitraan/Reseller" [ref=e441] [cursor=pointer]:
+              - /url: "#"
+    - generic [ref=e442]:
+      - generic [ref=e443]:
+        - 'link "WhatsApp CS: +62 812-0000-0000" [ref=e444] [cursor=pointer]':
+          - /url: https://wa.me/6281200000000
+        - link "cs@aventivadigital.net" [ref=e449] [cursor=pointer]:
+          - /url: mailto:cs@aventivadigital.net
+        - generic [ref=e454]: "CS: Setiap hari, 08.00–22.00 WIB"
+      - generic [ref=e459]:
+        - generic [ref=e460]: Metode pembayaran
+        - generic [ref=e461]:
+          - generic [ref=e462]: QRIS
+          - generic [ref=e463]: BCA
+          - generic [ref=e464]: Mandiri
+          - generic [ref=e465]: BNI
+          - generic [ref=e466]: BRI
+          - generic [ref=e467]: GoPay
+          - generic [ref=e468]: OVO
+          - generic [ref=e469]: DANA
+          - generic [ref=e470]: ShopeePay
+    - generic [ref=e472]:
+      - generic [ref=e473]: © 2026 Aventiva Digital. Seluruh hak dilindungi.
+      - navigation [ref=e474]:
+        - link "Syarat & Ketentuan" [ref=e475] [cursor=pointer]:
+          - /url: "#"
+        - generic [aria-hidden] [ref=e476]: "|"
+        - link "Kebijakan Privasi" [ref=e477] [cursor=pointer]:
+          - /url: "#"
+  - button "Kembali ke atas"

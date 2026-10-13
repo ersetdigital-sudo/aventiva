@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Semua Produk — Aventiva Digital</title>
+<link rel="stylesheet" href="/assets/theme.css">
+<script src="https://cdn.moda.app/runtime-libs/tailwind-browser-4.1.13-index.global.min.js"></script><style data-moda-export-fonts="true">@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-extralight.ttf") format("truetype"); font-style: normal; font-weight: 200; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-extralightitalic.ttf") format("truetype"); font-style: italic; font-weight: 200; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-light.ttf") format("truetype"); font-style: normal; font-weight: 300; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-lightitalic.ttf") format("truetype"); font-style: italic; font-weight: 300; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-regular.ttf") format("truetype"); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-italic.ttf") format("truetype"); font-style: italic; font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-medium.ttf") format("truetype"); font-style: normal; font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-mediumitalic.ttf") format("truetype"); font-style: italic; font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-semibold.ttf") format("truetype"); font-style: normal; font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-semibolditalic.ttf") format("truetype"); font-style: italic; font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-bold.ttf") format("truetype"); font-style: normal; font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-bolditalic.ttf") format("truetype"); font-style: italic; font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-extrabold.ttf") format("truetype"); font-style: normal; font-weight: 800; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-extrabolditalic.ttf") format("truetype"); font-style: italic; font-weight: 800; font-display: swap; }</style></head><body>
+<header id="site-header"></header>
+
+<main class="wrap pb-5">
+  <div class="text-sm text-slate-500 mb-3"><a href="/">Beranda</a> / <span id="crumb"></span></div>
+  <div id="mcats" class="md:hidden flex gap-2 overflow-x-auto noscroll mb-4"></div>
+  <div class="grid md:grid-cols-[220px_1fr] gap-5">
+    <aside class="hidden md:block">
+      <div class="bg-white rounded-2xl border border-slate-200 p-3 sticky top-24">
+        <div class="font-bold px-2 py-2">Kategori</div>
+        <div id="cats" class="flex flex-col"></div>
+      </div>
+    </aside>
+    <section>
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 mb-4 flex flex-col md:flex-row md:items-center gap-3 justify-between">
+        <h1 class="text-2xl font-extrabold" id="title"></h1>
+        <div class="flex items-center gap-2 text-sm"><span class="text-slate-500">Urutkan</span>
+          <select id="sort" class="border border-slate-300 rounded-lg px-2 py-1.5"><option value="">Relevan</option><option value="lo">Harga terendah</option><option value="hi">Harga tertinggi</option></select></div>
+      </div>
+      <div id="filters" class="flex gap-2 overflow-x-auto noscroll mb-4"></div>
+      <p class="text-sm text-slate-500 mb-3" id="count"></p>
+      <div id="grid" class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3"></div>
+      <p id="empty" class="hidden text-center py-16 text-slate-500">Produk tidak ditemukan.</p>
+    </section>
+  </div>
+</main>
+<dialog id="buy"></dialog><div id="toast"></div>
+<script src="/assets/config.js"></script>
+<script src="/assets/shop.js"></script>
+<script src="/assets/header.js"></script>
+<script src="/assets/footer.js"></script>
+<script>
+
+const P=new URLSearchParams(location.search);let cur=CATS[P.get('c')]?P.get('c'):'pulsa',flt='Semua',q=(P.get('q')||'').toLowerCase(),srt='';
+const $=i=>document.getElementById(i);$('q').value=q;
+if(q&&!P.get('c')){const hit=Object.keys(CATS).find(k=>CATS[k].items.some(i=>(i.n+i.b+CATS[k].name).toLowerCase().includes(q)));if(hit)cur=hit}
+function render(){
+ const c=CATS[cur];$('title').textContent=c.name;$('crumb').textContent=c.name;
+ $('cats').innerHTML=Object.entries(CATS).map(([k,x])=>`<button onclick="cur='${k}';flt='Semua';render()" class="text-left px-3 py-2.5 rounded-lg text-sm font-medium ${k===cur?'bg-[color:var(--soft)] text-indigo-800':'hover:bg-slate-50'}"><span class="inline-flex items-center gap-2">${ic(x.ico,"w-5 h-5")}${x.name}</span></button>`).join('');
+ $('mcats').innerHTML=Object.entries(CATS).map(([k,x])=>`<button class="chip" aria-pressed="${k===cur}" onclick="cur='${k}';flt='Semua';render()">${x.name}</button>`).join('');
+ $('filters').innerHTML=['Semua',...c.filters].map(f=>`<button class="chip" aria-pressed="${f===flt}" onclick="flt='${f}';render()">${f}</button>`).join('');
+ let it=c.items.map((x,i)=>[x,i]).filter(([x])=>(flt==='Semua'||x.f===flt)&&(x.n+' '+x.b+' '+x.d).toLowerCase().includes(q));
+ if(srt)it.sort((a,b)=>srt==='lo'?a[0].p-b[0].p:b[0].p-a[0].p);
+ $('count').textContent=it.length+' produk';$('empty').classList.toggle('hidden',it.length>0);
+ $('grid').innerHTML=it.map(([x,i])=>card(cur,x,i)).join('');
+}
+$('q').oninput=e=>{q=e.target.value.toLowerCase().trim();render()};
+$('sort').onchange=e=>{srt=e.target.value;render()};
+render();
+</script>
+</body></html>

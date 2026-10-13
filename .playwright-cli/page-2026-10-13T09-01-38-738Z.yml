@@ -1,0 +1,267 @@
+- generic [ref=f1e1]:
+  - link "Lompat ke konten utama" [ref=f1e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=f1e3]:
+    - generic [ref=f1e4]:
+      - generic [ref=f1e5]:
+        - link "aventiva." [ref=f1e6] [cursor=pointer]:
+          - /url: /
+        - search [ref=f1e8]:
+          - textbox "Cari produk" [ref=f1e13]:
+            - /placeholder: Cari pulsa, kuota, token PLN, BPJS…
+          - button "Cari" [ref=f1e14]
+        - generic [ref=f1e15]:
+          - link "Cek Transaksi" [ref=f1e16] [cursor=pointer]:
+            - /url: /cek-transaksi
+          - link "Bantuan" [ref=f1e21] [cursor=pointer]:
+            - /url: /bantuan
+      - navigation "Kategori produk" [ref=f1e26]:
+        - link "Pulsa" [ref=f1e27] [cursor=pointer]:
+          - /url: /layanan?c=pulsa
+        - link "Paket Data" [ref=f1e31] [cursor=pointer]:
+          - /url: /layanan?c=data
+        - link "Token PLN" [ref=f1e35] [cursor=pointer]:
+          - /url: /layanan?c=pln
+        - link "E-Wallet" [ref=f1e39] [cursor=pointer]:
+          - /url: /layanan?c=ewallet
+        - link "Internet" [ref=f1e44] [cursor=pointer]:
+          - /url: /layanan?c=internet
+        - link "BPJS" [ref=f1e49] [cursor=pointer]:
+          - /url: /layanan?c=bpjs
+        - link "PDAM" [ref=f1e54] [cursor=pointer]:
+          - /url: /layanan?c=pdam
+        - link "Multifinance" [ref=f1e58] [cursor=pointer]:
+          - /url: /layanan?c=finance
+  - main [ref=f1e64]:
+    - generic [ref=f1e65]:
+      - link "Beranda" [ref=f1e66] [cursor=pointer]:
+        - /url: /
+      - text: / Token PLN
+    - generic [ref=f1e67]:
+      - complementary [ref=f1e68]:
+        - generic [ref=f1e69]:
+          - generic [ref=f1e70]: Kategori
+          - generic [ref=f1e71]:
+            - button "Pulsa" [ref=f1e72]
+            - button "Paket Data" [ref=f1e76]
+            - button "Token PLN" [ref=f1e80]
+            - button "E-Wallet" [ref=f1e84]
+            - button "Internet" [ref=f1e89]
+            - button "BPJS" [ref=f1e94]
+            - button "PDAM" [ref=f1e99]
+            - button "Multifinance" [ref=f1e103]
+      - generic [ref=f1e109]:
+        - generic [ref=f1e110]:
+          - heading "Token PLN" [level=1] [ref=f1e111]
+          - generic [ref=f1e112]:
+            - generic [ref=f1e113]: Urutkan
+            - combobox [ref=f1e114]:
+              - option "Relevan" [selected]
+              - option "Harga terendah"
+              - option "Harga tertinggi"
+        - generic [ref=f1e115]:
+          - button "Semua" [pressed] [ref=f1e116]
+          - button "Token" [ref=f1e117]
+          - button "Tagihan" [ref=f1e118]
+        - paragraph [ref=f1e119]: 7 produk
+        - generic [ref=f1e120]:
+          - article [ref=f1e121]:
+            - generic [ref=f1e122]:
+              - generic [ref=f1e123]: PLN
+              - generic [ref=f1e124]: PLN
+            - heading "Token 20.000" [level=3] [ref=f1e125]
+            - generic [ref=f1e126]: Token langsung dikirim
+            - separator [ref=f1e130]
+            - generic [ref=f1e131]: Rp20.000
+            - button "Beli" [ref=f1e135]
+          - article [ref=f1e136]:
+            - generic [ref=f1e137]:
+              - generic [ref=f1e138]: PLN
+              - generic [ref=f1e139]: PLN
+            - heading "Token 50.000" [level=3] [ref=f1e140]
+            - generic [ref=f1e141]: Token langsung dikirim
+            - separator [ref=f1e145]
+            - generic [ref=f1e146]: Rp50.000
+            - button "Beli" [ref=f1e150]
+          - article [ref=f1e151]:
+            - generic [ref=f1e152]:
+              - generic [ref=f1e153]: PLN
+              - generic [ref=f1e154]: PLN
+            - heading "Token 100.000" [level=3] [ref=f1e155]
+            - generic [ref=f1e156]: Token langsung dikirim
+            - separator [ref=f1e160]
+            - generic [ref=f1e161]: Rp100.000
+            - button "Beli" [ref=f1e165]
+          - article [ref=f1e166]:
+            - generic [ref=f1e167]:
+              - generic [ref=f1e168]: PLN
+              - generic [ref=f1e169]: PLN
+            - heading "Token 200.000" [level=3] [ref=f1e170]
+            - generic [ref=f1e171]: Token langsung dikirim
+            - separator [ref=f1e175]
+            - generic [ref=f1e176]: Rp200.000
+            - button "Beli" [ref=f1e180]
+          - article [ref=f1e181]:
+            - generic [ref=f1e182]:
+              - generic [ref=f1e183]: PLN
+              - generic [ref=f1e184]: PLN
+            - heading "Token 500.000" [level=3] [ref=f1e185]
+            - generic [ref=f1e186]: Token langsung dikirim
+            - separator [ref=f1e190]
+            - generic [ref=f1e191]: Rp500.000
+            - button "Beli" [ref=f1e195]
+          - article [ref=f1e196]:
+            - generic [ref=f1e197]:
+              - generic [ref=f1e198]: PLN
+              - generic [ref=f1e199]: PLN
+            - heading "Token 1000.000" [level=3] [ref=f1e200]
+            - generic [ref=f1e201]: Token langsung dikirim
+            - separator [ref=f1e205]
+            - generic [ref=f1e206]: Rp1.000.000
+            - button "Beli" [ref=f1e210]
+          - article [ref=f1e211]:
+            - generic [ref=f1e212]:
+              - generic [ref=f1e213]: PLN
+              - generic [ref=f1e214]: PLN
+            - heading "Tagihan Listrik" [level=3] [ref=f1e215]
+            - generic [ref=f1e216]: Pascabayar
+            - separator [ref=f1e220]
+            - generic [ref=f1e221]:
+              - generic [ref=f1e222]: Cek tagihan
+              - generic [ref=f1e223]: Nominal sesuai tagihan
+            - button "Beli" [ref=f1e224]
+  - contentinfo [ref=f1e225]:
+    - generic [ref=f1e227]:
+      - generic [ref=f1e233]:
+        - generic [ref=f1e234]: Harga Transparan
+        - paragraph [ref=f1e235]: Biaya admin terlihat sebelum bayar
+      - generic [ref=f1e240]:
+        - generic [ref=f1e241]: Transaksi Cepat
+        - paragraph [ref=f1e242]: Proses otomatis 24/7
+      - generic [ref=f1e248]:
+        - generic [ref=f1e249]: Pembayaran Aman
+        - paragraph [ref=f1e250]: Berbagai metode pembayaran resmi
+    - generic [ref=f1e251]:
+      - generic [ref=f1e252]:
+        - link "aventiva." [ref=f1e253] [cursor=pointer]:
+          - /url: /
+        - paragraph [ref=f1e254]: Platform pembelian pulsa, paket data, token PLN, e-wallet, dan pembayaran tagihan dengan harga jelas dan proses otomatis.
+        - generic [ref=f1e255]:
+          - link "Instagram" [ref=f1e256] [cursor=pointer]:
+            - /url: "#"
+          - link "Facebook" [ref=f1e260] [cursor=pointer]:
+            - /url: "#"
+          - link "TikTok" [ref=f1e263] [cursor=pointer]:
+            - /url: "#"
+          - link "WhatsApp" [ref=f1e267] [cursor=pointer]:
+            - /url: https://wa.me/6281200000000
+      - generic [ref=f1e271]:
+        - button "Produk" [ref=f1e272]
+        - list [ref=f1e273]:
+          - listitem [ref=f1e274]:
+            - link "Pulsa" [ref=f1e275] [cursor=pointer]:
+              - /url: /layanan?c=pulsa
+          - listitem [ref=f1e276]:
+            - link "Paket Data" [ref=f1e277] [cursor=pointer]:
+              - /url: /layanan?c=data
+          - listitem [ref=f1e278]:
+            - link "Token PLN" [ref=f1e279] [cursor=pointer]:
+              - /url: /layanan?c=pln
+          - listitem [ref=f1e280]:
+            - link "E-Wallet" [ref=f1e281] [cursor=pointer]:
+              - /url: /layanan?c=ewallet
+          - listitem [ref=f1e282]:
+            - link "Internet" [ref=f1e283] [cursor=pointer]:
+              - /url: /layanan?c=internet
+          - listitem [ref=f1e284]:
+            - link "BPJS" [ref=f1e285] [cursor=pointer]:
+              - /url: /layanan?c=bpjs
+          - listitem [ref=f1e286]:
+            - link "PDAM" [ref=f1e287] [cursor=pointer]:
+              - /url: /layanan?c=pdam
+          - listitem [ref=f1e288]:
+            - link "Multifinance" [ref=f1e289] [cursor=pointer]:
+              - /url: /layanan?c=finance
+      - generic [ref=f1e290]:
+        - button "Bantuan" [ref=f1e291]
+        - list [ref=f1e292]:
+          - listitem [ref=f1e293]:
+            - link "Cara Transaksi" [ref=f1e294] [cursor=pointer]:
+              - /url: /bantuan?k=cara
+          - listitem [ref=f1e295]:
+            - link "Cek Transaksi" [ref=f1e296] [cursor=pointer]:
+              - /url: /cek-transaksi
+          - listitem [ref=f1e297]:
+            - link "FAQ" [ref=f1e298] [cursor=pointer]:
+              - /url: /bantuan#faq
+          - listitem [ref=f1e299]:
+            - link "Hubungi Kami" [ref=f1e300] [cursor=pointer]:
+              - /url: /bantuan#kontak
+          - listitem [ref=f1e301]:
+            - link "Pusat Bantuan" [ref=f1e302] [cursor=pointer]:
+              - /url: /bantuan
+      - generic [ref=f1e303]:
+        - button "Perusahaan" [ref=f1e304]
+        - list [ref=f1e305]:
+          - listitem [ref=f1e306]:
+            - link "Tentang Kami" [ref=f1e307] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=f1e308]:
+            - link "Syarat & Ketentuan" [ref=f1e309] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=f1e310]:
+            - link "Kebijakan Privasi" [ref=f1e311] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=f1e312]:
+            - link "Kemitraan/Reseller" [ref=f1e313] [cursor=pointer]:
+              - /url: "#"
+    - generic [ref=f1e314]:
+      - generic [ref=f1e315]:
+        - 'link "WhatsApp CS: +62 812-0000-0000" [ref=f1e316] [cursor=pointer]':
+          - /url: https://wa.me/6281200000000
+        - link "cs@aventivadigital.net" [ref=f1e321] [cursor=pointer]:
+          - /url: mailto:cs@aventivadigital.net
+        - generic [ref=f1e326]: "CS: Setiap hari, 08.00–22.00 WIB"
+      - generic [ref=f1e331]:
+        - generic [ref=f1e332]: Metode pembayaran
+        - generic [ref=f1e333]:
+          - generic [ref=f1e334]: QRIS
+          - generic [ref=f1e335]: BCA
+          - generic [ref=f1e336]: Mandiri
+          - generic [ref=f1e337]: BNI
+          - generic [ref=f1e338]: BRI
+          - generic [ref=f1e339]: GoPay
+          - generic [ref=f1e340]: OVO
+          - generic [ref=f1e341]: DANA
+          - generic [ref=f1e342]: ShopeePay
+    - generic [ref=f1e344]:
+      - generic [ref=f1e345]: © 2026 Aventiva Digital. Seluruh hak dilindungi.
+      - navigation [ref=f1e346]:
+        - link "Syarat & Ketentuan" [ref=f1e347] [cursor=pointer]:
+          - /url: "#"
+        - generic [aria-hidden] [ref=f1e348]: "|"
+        - link "Kebijakan Privasi" [ref=f1e349] [cursor=pointer]:
+          - /url: "#"
+  - button "Kembali ke atas"
+  - dialog "Beli produk" [ref=f1e351]:
+    - generic [ref=f1e352]:
+      - generic [ref=f1e353]:
+        - generic [ref=f1e354]:
+          - generic [ref=f1e355]: PLN
+          - heading "Token PLN — Token 20.000" [level=3] [ref=f1e356]
+        - button "Tutup" [active] [ref=f1e357]: ×
+      - generic [ref=f1e358]: No. Meter / ID Pelanggan
+      - textbox "No. Meter / ID Pelanggan" [ref=f1e359]:
+        - /placeholder: Masukkan no. meter / id pelanggan
+      - generic [ref=f1e360]:
+        - generic [ref=f1e361]: Harga
+        - generic [ref=f1e362]: Rp20.000
+      - generic [ref=f1e363]:
+        - generic [ref=f1e364]: Biaya admin
+        - generic [ref=f1e365]: Rp2.500
+      - generic [ref=f1e366]:
+        - generic [ref=f1e367]: Total
+        - generic [ref=f1e368]: Rp22.500
+      - alert
+      - button "Lanjut ke Pembayaran" [ref=f1e369]
+  - alert [ref=f1e350]

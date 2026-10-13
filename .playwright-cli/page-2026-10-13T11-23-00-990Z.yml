@@ -1,0 +1,167 @@
+- generic [active] [ref=f4e1]:
+  - link "Lompat ke konten utama" [ref=f4e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=f4e3]:
+    - generic [ref=f4e4]:
+      - generic [ref=f4e5]:
+        - link "aventiva." [ref=f4e6] [cursor=pointer]:
+          - /url: /
+        - search [ref=f4e8]:
+          - textbox "Cari produk" [ref=f4e13]:
+            - /placeholder: Cari pulsa, kuota, token PLN, BPJS…
+          - button "Cari" [ref=f4e14]
+        - generic [ref=f4e15]:
+          - link "Cek Transaksi" [ref=f4e16] [cursor=pointer]:
+            - /url: /cek-transaksi
+          - link "Bantuan" [ref=f4e21] [cursor=pointer]:
+            - /url: /bantuan
+      - navigation "Kategori produk" [ref=f4e26]:
+        - link "Pulsa" [ref=f4e27] [cursor=pointer]:
+          - /url: /layanan?c=pulsa
+        - link "Paket Data" [ref=f4e31] [cursor=pointer]:
+          - /url: /layanan?c=data
+        - link "Token PLN" [ref=f4e35] [cursor=pointer]:
+          - /url: /layanan?c=pln
+        - link "E-Wallet" [ref=f4e39] [cursor=pointer]:
+          - /url: /layanan?c=ewallet
+        - link "Internet" [ref=f4e44] [cursor=pointer]:
+          - /url: /layanan?c=internet
+        - link "BPJS" [ref=f4e49] [cursor=pointer]:
+          - /url: /layanan?c=bpjs
+        - link "PDAM" [ref=f4e54] [cursor=pointer]:
+          - /url: /layanan?c=pdam
+        - link "Multifinance" [ref=f4e58] [cursor=pointer]:
+          - /url: /layanan?c=finance
+  - main [ref=f4e64]:
+    - navigation "Breadcrumb" [ref=f4e65]:
+      - link "Beranda" [ref=f4e66] [cursor=pointer]:
+        - /url: /
+      - generic [aria-hidden] [ref=f4e67]: ›
+      - generic [ref=f4e68]: Cek Transaksi
+    - generic [ref=f4e69]:
+      - heading "Cek Status Transaksi" [level=1] [ref=f4e70]
+      - paragraph [ref=f4e71]: Masukkan ID transaksi atau nomor tujuan untuk melihat status pesananmu.
+      - generic [ref=f4e72]:
+        - generic [ref=f4e73]: ID Transaksi / Nomor HP / ID Pelanggan
+        - textbox "ID Transaksi / Nomor HP / ID Pelanggan" [ref=f4e75]:
+          - /placeholder: "Contoh: AVD-DEMO1 atau 081234567890"
+        - alert [ref=f4e76]
+        - paragraph [ref=f4e77]: "Coba data contoh: AVD-DEMO1 (berhasil, token PLN), AVD-DEMO2 (diproses), AVD-DEMO3 (gagal), AVD-DEMO4 (menunggu), AVD-DEMO5 (kedaluwarsa)."
+        - button "Cek Status" [ref=f4e78] [cursor=pointer]
+      - link "Butuh bantuan? Hubungi kami" [ref=f4e79] [cursor=pointer]:
+        - /url: /bantuan
+        - generic [aria-hidden] [ref=f4e81]: →
+  - contentinfo [ref=f4e82]:
+    - generic [ref=f4e84]:
+      - generic [ref=f4e90]:
+        - generic [ref=f4e91]: Harga Transparan
+        - paragraph [ref=f4e92]: Biaya admin terlihat sebelum bayar
+      - generic [ref=f4e97]:
+        - generic [ref=f4e98]: Transaksi Cepat
+        - paragraph [ref=f4e99]: Proses otomatis 24/7
+      - generic [ref=f4e105]:
+        - generic [ref=f4e106]: Pembayaran Aman
+        - paragraph [ref=f4e107]: Berbagai metode pembayaran resmi
+    - generic [ref=f4e108]:
+      - generic [ref=f4e109]:
+        - link "aventiva." [ref=f4e110] [cursor=pointer]:
+          - /url: /
+        - paragraph [ref=f4e111]: Platform pembelian pulsa, paket data, token PLN, e-wallet, dan pembayaran tagihan dengan harga jelas dan proses otomatis.
+        - generic [ref=f4e112]:
+          - link "Instagram" [ref=f4e113] [cursor=pointer]:
+            - /url: "#"
+          - link "Facebook" [ref=f4e117] [cursor=pointer]:
+            - /url: "#"
+          - link "TikTok" [ref=f4e120] [cursor=pointer]:
+            - /url: "#"
+          - link "WhatsApp" [ref=f4e124] [cursor=pointer]:
+            - /url: https://wa.me/6281200000000
+      - generic [ref=f4e128]:
+        - button "Produk" [ref=f4e129]
+        - list [ref=f4e130]:
+          - listitem [ref=f4e131]:
+            - link "Pulsa" [ref=f4e132] [cursor=pointer]:
+              - /url: /layanan?c=pulsa
+          - listitem [ref=f4e133]:
+            - link "Paket Data" [ref=f4e134] [cursor=pointer]:
+              - /url: /layanan?c=data
+          - listitem [ref=f4e135]:
+            - link "Token PLN" [ref=f4e136] [cursor=pointer]:
+              - /url: /layanan?c=pln
+          - listitem [ref=f4e137]:
+            - link "E-Wallet" [ref=f4e138] [cursor=pointer]:
+              - /url: /layanan?c=ewallet
+          - listitem [ref=f4e139]:
+            - link "Internet" [ref=f4e140] [cursor=pointer]:
+              - /url: /layanan?c=internet
+          - listitem [ref=f4e141]:
+            - link "BPJS" [ref=f4e142] [cursor=pointer]:
+              - /url: /layanan?c=bpjs
+          - listitem [ref=f4e143]:
+            - link "PDAM" [ref=f4e144] [cursor=pointer]:
+              - /url: /layanan?c=pdam
+          - listitem [ref=f4e145]:
+            - link "Multifinance" [ref=f4e146] [cursor=pointer]:
+              - /url: /layanan?c=finance
+      - generic [ref=f4e147]:
+        - button "Bantuan" [ref=f4e148]
+        - list [ref=f4e149]:
+          - listitem [ref=f4e150]:
+            - link "Cara Transaksi" [ref=f4e151] [cursor=pointer]:
+              - /url: /bantuan?k=cara
+          - listitem [ref=f4e152]:
+            - link "Cek Transaksi" [ref=f4e153] [cursor=pointer]:
+              - /url: /cek-transaksi
+          - listitem [ref=f4e154]:
+            - link "FAQ" [ref=f4e155] [cursor=pointer]:
+              - /url: /bantuan#faq
+          - listitem [ref=f4e156]:
+            - link "Hubungi Kami" [ref=f4e157] [cursor=pointer]:
+              - /url: /bantuan#kontak
+          - listitem [ref=f4e158]:
+            - link "Pusat Bantuan" [ref=f4e159] [cursor=pointer]:
+              - /url: /bantuan
+      - generic [ref=f4e160]:
+        - button "Perusahaan" [ref=f4e161]
+        - list [ref=f4e162]:
+          - listitem [ref=f4e163]:
+            - link "Tentang Kami" [ref=f4e164] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=f4e165]:
+            - link "Syarat & Ketentuan" [ref=f4e166] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=f4e167]:
+            - link "Kebijakan Privasi" [ref=f4e168] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=f4e169]:
+            - link "Kemitraan/Reseller" [ref=f4e170] [cursor=pointer]:
+              - /url: "#"
+    - generic [ref=f4e171]:
+      - generic [ref=f4e172]:
+        - 'link "WhatsApp CS: +62 812-0000-0000" [ref=f4e173] [cursor=pointer]':
+          - /url: https://wa.me/6281200000000
+        - link "cs@aventivadigital.net" [ref=f4e178] [cursor=pointer]:
+          - /url: mailto:cs@aventivadigital.net
+        - generic [ref=f4e183]: "CS: Setiap hari, 08.00–22.00 WIB"
+      - generic [ref=f4e188]:
+        - generic [ref=f4e189]: Metode pembayaran
+        - generic [ref=f4e190]:
+          - generic [ref=f4e191]: QRIS
+          - generic [ref=f4e192]: BCA
+          - generic [ref=f4e193]: Mandiri
+          - generic [ref=f4e194]: BNI
+          - generic [ref=f4e195]: BRI
+          - generic [ref=f4e196]: GoPay
+          - generic [ref=f4e197]: OVO
+          - generic [ref=f4e198]: DANA
+          - generic [ref=f4e199]: ShopeePay
+    - generic [ref=f4e201]:
+      - generic [ref=f4e202]: © 2026 Aventiva Digital. Seluruh hak dilindungi.
+      - navigation [ref=f4e203]:
+        - link "Syarat & Ketentuan" [ref=f4e204] [cursor=pointer]:
+          - /url: "#"
+        - generic [aria-hidden] [ref=f4e205]: "|"
+        - link "Kebijakan Privasi" [ref=f4e206] [cursor=pointer]:
+          - /url: "#"
+  - button "Kembali ke atas"
+  - button "Open Next.js Dev Tools" [ref=f4e212] [cursor=pointer]

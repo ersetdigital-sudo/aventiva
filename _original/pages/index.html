@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aventiva Digital — Pulsa, Data, Token PLN &amp; Tagihan</title>
+<link rel="stylesheet" href="/assets/theme.css">
+<script src="https://cdn.moda.app/runtime-libs/tailwind-browser-4.1.13-index.global.min.js"></script><style data-moda-export-fonts="true">@font-face { font-family: 'Plus Jakarta Sans'; src: url("../fonts/plusjakartasans-extralight.ttf") format("truetype"); font-style: normal; font-weight: 200; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../fonts/plusjakartasans-extralightitalic.ttf") format("truetype"); font-style: italic; font-weight: 200; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../fonts/plusjakartasans-light.ttf") format("truetype"); font-style: normal; font-weight: 300; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../fonts/plusjakartasans-lightitalic.ttf") format("truetype"); font-style: italic; font-weight: 300; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../fonts/plusjakartasans-regular.ttf") format("truetype"); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../fonts/plusjakartasans-italic.ttf") format("truetype"); font-style: italic; font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../fonts/plusjakartasans-medium.ttf") format("truetype"); font-style: normal; font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../fonts/plusjakartasans-mediumitalic.ttf") format("truetype"); font-style: italic; font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../fonts/plusjakartasans-semibold.ttf") format("truetype"); font-style: normal; font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../fonts/plusjakartasans-semibolditalic.ttf") format("truetype"); font-style: italic; font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../fonts/plusjakartasans-bold.ttf") format("truetype"); font-style: normal; font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../fonts/plusjakartasans-bolditalic.ttf") format("truetype"); font-style: italic; font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../fonts/plusjakartasans-extrabold.ttf") format("truetype"); font-style: normal; font-weight: 800; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../fonts/plusjakartasans-extrabolditalic.ttf") format("truetype"); font-style: italic; font-weight: 800; font-display: swap; }</style></head><body>
+
+<header id="site-header"></header>
+
+<main class="wrap pb-5 space-y-8">
+  <!-- banners -->
+  <section class="grid md:grid-cols-3 gap-4">
+    <div class="md:col-span-2 rounded-2xl p-7 md:p-10 text-white relative overflow-hidden" style="background:linear-gradient(120deg,#4338CA,#1E1B4B)">
+      <div class="absolute -right-10 -bottom-16 w-72 h-72 rounded-full bg-white/10"></div>
+      <div class="absolute right-12 top-10 hidden md:block text-white/25" data-ic="phone" data-c="w-36 h-36"></div>
+      <p class="text-amber-300 font-bold text-sm">Digital transactions. Simplified.</p>
+      <h1 class="text-3xl md:text-5xl font-extrabold leading-tight mt-2 max-w-[520px]">Isi pulsa, kuota &amp; bayar tagihan dalam satu tempat</h1>
+      <p class="mt-3 text-indigo-200 max-w-[440px]">Harga jelas, biaya admin terlihat sebelum bayar, dan status transaksi bisa dipantau.</p>
+      <a href="/layanan" class="btn-primary inline-block mt-6">Belanja Sekarang</a>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-1 gap-4">
+      <a href="/layanan?c=pln" class="rounded-2xl p-5 bg-[color:var(--accent)] text-[color:var(--brand-d)] relative overflow-hidden"><div class="absolute right-4 bottom-4 opacity-60 hidden md:block" data-ic="zap" data-c="w-12 h-12"></div><div class="font-extrabold text-lg">Token PLN</div><div class="text-sm">Mulai 20rb, token langsung dikirim</div></a>
+      <a href="/layanan?c=ewallet" class="rounded-2xl p-5 bg-[color:var(--soft)] text-[color:var(--brand-d)] border border-indigo-100 relative overflow-hidden"><div class="absolute right-4 bottom-4 opacity-60 hidden md:block" data-ic="wallet" data-c="w-12 h-12"></div><div class="font-extrabold text-lg">Top Up E-Wallet</div><div class="text-sm">GoPay, OVO, DANA, ShopeePay</div></a>
+    </div>
+  </section>
+
+  <!-- categories -->
+  <section class="bg-white rounded-2xl p-5 border border-slate-200">
+    <h2 class="font-bold text-lg mb-4">Kategori</h2>
+    <div id="cats" class="grid grid-cols-4 md:grid-cols-8 gap-y-5"></div>
+  </section>
+
+  <!-- products -->
+  <section>
+    <div class="flex items-center justify-between mb-4"><h2 class="font-bold text-xl">Pilihan Untukmu</h2><a href="/layanan" class="text-sm font-semibold text-indigo-700">Lihat semua →</a></div>
+    <div id="tabs" class="flex gap-2 overflow-x-auto noscroll mb-6" role="tablist"></div>
+    <div id="grid" class="pc-grid" aria-live="polite"></div>
+  </section>
+
+  <!-- usp -->
+  <section class="grid md:grid-cols-3 gap-4">
+    <div class="bg-white rounded-2xl p-5 border border-slate-200 flex gap-4"><div class="usp-ic" data-ic="receipt"></div><div><h3 class="font-bold">Harga transparan</h3><p class="text-sm text-slate-500">Harga &amp; biaya admin ditampilkan terpisah sebelum checkout.</p></div></div>
+    <div class="bg-white rounded-2xl p-5 border border-slate-200 flex gap-4"><div class="usp-ic" data-ic="search"></div><div><h3 class="font-bold">Status jelas</h3><p class="text-sm text-slate-500">Setiap pesanan punya nomor referensi untuk dipantau.</p></div></div>
+    <div class="bg-white rounded-2xl p-5 border border-slate-200 flex gap-4"><div class="usp-ic" data-ic="chat"></div><div><h3 class="font-bold" id="bantuan">Bantuan siap</h3><p class="text-sm text-slate-500">Ada kendala? Hubungi tim kami dengan nomor referensi.</p></div></div>
+  </section>
+
+  <!-- how -->
+  <section class="bg-white rounded-2xl p-6 border border-slate-200">
+    <h2 class="font-bold text-xl mb-5">Cara Belanja</h2>
+    <div class="grid md:grid-cols-3 gap-5">
+      <div class="flex gap-3"><b class="w-9 h-9 shrink-0 rounded-full bg-[color:var(--brand)] text-white grid place-items-center">1</b><div><h3 class="font-bold">Pilih produk</h3><p class="text-sm text-slate-500">Cari atau pilih dari kategori.</p></div></div>
+      <div class="flex gap-3"><b class="w-9 h-9 shrink-0 rounded-full bg-[color:var(--brand)] text-white grid place-items-center">2</b><div><h3 class="font-bold">Masukkan nomor</h3><p class="text-sm text-slate-500">Isi nomor tujuan, cek total, lalu beli.</p></div></div>
+      <div class="flex gap-3"><b class="w-9 h-9 shrink-0 rounded-full bg-[color:var(--brand)] text-white grid place-items-center">3</b><div><h3 class="font-bold">Checkout &amp; selesai</h3><p class="text-sm text-slate-500">Bayar dan pantau status pesanan.</p></div></div>
+    </div>
+  </section>
+</main>
+
+<dialog id="buy"></dialog><div id="toast"></div>
+<script src="/assets/config.js"></script>
+<script src="/assets/shop.js"></script>
+<script src="/assets/header.js"></script>
+<script src="/assets/footer.js"></script>
+<script>
+document.querySelectorAll("[data-ic]").forEach(e=>e.innerHTML=ic(e.dataset.ic,e.dataset.c||"w-6 h-6"));
+
+document.getElementById('cats').innerHTML=Object.entries(CATS).map(([k,c])=>`<a class="cat-ic" href="/layanan?c=${k}"><span>${ic(c.ico,"w-7 h-7")}</span>${c.name}</a>`).join('');
+const T=['pulsa','data','pln','ewallet'];let t='pulsa';const G=document.getElementById('grid');
+function rt(){document.getElementById('tabs').innerHTML=T.map(k=>`<button class="tab-pill" role="tab" aria-selected="${k===t}" onclick="t='${k}';rt()">${CATS[k].name}</button>`).join('');
+ const it=CATS[t].items.map((x,i)=>[x,i]);const pick=it.filter((_,j)=>j%Math.max(1,Math.floor(it.length/10))===0).slice(0,10);
+ const draw=()=>{G.innerHTML=pick.map(([x,i])=>card(t,x,i)).join('')};if(!G.dataset.ready){G.dataset.ready=1;draw();return}G.innerHTML=skel(10);setTimeout(draw,350)}
+rt();
+</script>
+</body></html>

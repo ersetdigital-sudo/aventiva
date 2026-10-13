@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Aventiva Digital">
+  <title>Aventiva Digital</title>
+  <defs>
+    <linearGradient id="avd-bg" x1="6" y1="2" x2="58" y2="62" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4F46E5" />
+      <stop offset=".5" stop-color="#3A34B8" />
+      <stop offset="1" stop-color="#1B1B4B" />
+    </linearGradient>
+    <radialGradient id="avd-glow" cx="46" cy="42" r="23" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FDB022" stop-opacity=".5" />
+      <stop offset=".6" stop-color="#FDB022" stop-opacity=".18" />
+      <stop offset="1" stop-color="#FDB022" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="avd-bar" x1="21" y1="36.5" x2="43" y2="36.5" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF" />
+      <stop offset="1" stop-color="#FDB022" />
+    </linearGradient>
+    <clipPath id="avd-clip">
+      <rect width="64" height="64" rx="15" />
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#avd-clip)">
+    <rect width="64" height="64" fill="url(#avd-bg)" />
+    <rect width="64" height="64" fill="url(#avd-glow)" />
+    <path d="M-6-4h76v27c-17 9-39 7-76-3z" fill="#fff" opacity=".07" />
+    <path d="M-6 68h76V55c-17-9-39-7-76 3z" fill="#0A0930" opacity=".22" />
+  </g>
+
+  <rect x=".75" y=".75" width="62.5" height="62.5" rx="14.25" fill="none" stroke="#fff" stroke-opacity=".14" stroke-width="1.5" />
+
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M15.5 49.5 32 19 48.5 49.5" stroke="#0A0930" stroke-opacity=".45" stroke-width="7.5" />
+    <path d="M15.5 47 32 16.5 48.5 47" stroke="#FFFFFF" stroke-width="7.5" />
+    <path d="M21.5 36.5h21" stroke="url(#avd-bar)" stroke-width="6" />
+  </g>
+</svg>

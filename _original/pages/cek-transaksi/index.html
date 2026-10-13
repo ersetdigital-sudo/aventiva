@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cek Status Transaksi — Aventiva Digital</title>
+<link rel="stylesheet" href="/assets/theme.css">
+<script src="https://cdn.moda.app/runtime-libs/tailwind-browser-4.1.13-index.global.min.js"></script><style data-moda-export-fonts="true">@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-extralight.ttf") format("truetype"); font-style: normal; font-weight: 200; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-extralightitalic.ttf") format("truetype"); font-style: italic; font-weight: 200; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-light.ttf") format("truetype"); font-style: normal; font-weight: 300; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-lightitalic.ttf") format("truetype"); font-style: italic; font-weight: 300; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-regular.ttf") format("truetype"); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-italic.ttf") format("truetype"); font-style: italic; font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-medium.ttf") format("truetype"); font-style: normal; font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-mediumitalic.ttf") format("truetype"); font-style: italic; font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-semibold.ttf") format("truetype"); font-style: normal; font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-semibolditalic.ttf") format("truetype"); font-style: italic; font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-bold.ttf") format("truetype"); font-style: normal; font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-bolditalic.ttf") format("truetype"); font-style: italic; font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-extrabold.ttf") format("truetype"); font-style: normal; font-weight: 800; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-extrabolditalic.ttf") format("truetype"); font-style: italic; font-weight: 800; font-display: swap; }</style></head><body>
+<header id="site-header"></header>
+<main class="wrap sp pb-5">
+ <nav class="crumb" aria-label="Breadcrumb"><a href="/">Beranda</a><span aria-hidden="true">›</span><span aria-current="page">Cek Transaksi</span></nav>
+ <div class="sp-narrow">
+  <h1 class="sp-title">Cek Status Transaksi</h1>
+  <p class="sp-sub">Masukkan ID transaksi atau nomor tujuan untuk melihat status pesananmu.</p>
+  <form id="f" class="sp-card" style="margin-top:24px" novalidate="">
+   <label class="f-lbl" for="key">ID Transaksi / Nomor HP / ID Pelanggan</label>
+   <div class="f-field"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+    <input id="key" class="f-inp" autocomplete="off" placeholder="Contoh: AVD-DEMO1 atau 081234567890" aria-describedby="err hint"></div>
+   <p id="err" class="f-err" role="alert"></p>
+   <p id="hint" class="f-hint">Coba data contoh: AVD-DEMO1 (berhasil, token PLN), AVD-DEMO2 (diproses), AVD-DEMO3 (gagal), AVD-DEMO4 (menunggu), AVD-DEMO5 (kedaluwarsa).</p>
+   <button id="btn" class="btn-p" style="width:100%;margin-top:16px">Cek Status</button>
+  </form>
+  <div id="res" aria-live="polite"></div>
+  <a href="/bantuan" class="help-box"><span>Butuh bantuan? Hubungi kami</span><span aria-hidden="true">→</span></a>
+ </div>
+</main>
+<dialog id="buy"></dialog><div id="toast"></div>
+<script src="/assets/config.js"></script>
+<script src="/assets/shop.js"></script>
+<script src="/assets/header.js"></script>
+<script src="/assets/footer.js"></script>
+<script>
+const H=36e5,now=Date.now();
+const DEMO=[
+ {id:'AVD-DEMO1',n:'Token PLN 100.000',t:'14012345678',p:102500,d:now-2*H,s:'success',token:'4821 0937 5512 6604 1188'},
+ {id:'AVD-DEMO2',n:'Pulsa Telkomsel 50.000',t:'081234567890',p:51500,d:now-.3*H,s:'process'},
+ {id:'AVD-DEMO3',n:'Paket Data XL 10GB',t:'087812345678',p:65000,d:now-26*H,s:'failed'},
+ {id:'AVD-DEMO4',n:'Saldo DANA 100.000',t:'085712345678',p:101000,d:now-.1*H,s:'pending'},
+ {id:'AVD-DEMO5',n:'Pulsa Indosat 25.000',t:'085612345678',p:26750,d:now-72*H,s:'expired'}];
+const ST={pending:['Menunggu Pembayaran','st-pending'],process:['Diproses','st-process'],success:['Berhasil','st-success'],failed:['Gagal','st-failed'],expired:['Kedaluwarsa','st-expired']};
+const $=i=>document.getElementById(i),fmt=t=>new Date(t).toLocaleString('id-ID',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})+' WIB';
+const CK='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>';
+const XX='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+function all(){let l=[];try{l=JSON.parse(localStorage.getItem('avd_tx')||'[]')}catch(_){}return l.map(x=>({...x,n:x.n.replace(/ – /,' ')})).concat(DEMO)}
+function copy(v,b){(navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).then(()=>{b.textContent='Tersalin ✓';setTimeout(()=>b.textContent=b.dataset.l,1500)}).catch(()=>{b.textContent='Gagal salin'})}
+function steps(x){
+ const m=10*6e4,lv={pending:1,process:2,success:4,failed:2,expired:1}[x.s];
+ const names=['Pesanan dibuat','Pembayaran diterima','Diproses','Selesai'];
+ return `<ol class="tl">${names.map((n,i)=>{const done=i<lv,fail=x.s==='failed'&&i===2,exp=x.s==='expired'&&i===1;
+  const label=fail?'Gagal diproses':exp?'Pembayaran kedaluwarsa':n;
+  const time=done?fmt(x.d+i*m/2):fail?fmt(x.d+m):exp?fmt(x.d+24*H):'Menunggu';
+  return `<li class="${done?'done':''}${fail||exp?' fail':''}"><span class="dot">${done?CK:fail||exp?XX:''}</span><b>${label}</b><span>${time}</span></li>`}).join('')}</ol>`}
+function show(x){
+ const [lbl,cls]=ST[x.s];
+ $('res').innerHTML=`<section class="sp-card" style="margin-top:24px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap"><div><p class="f-hint" style="margin:0">Produk</p><h2 style="font-size:20px;font-weight:800;color:#1B1B4B;margin-top:4px">${x.n}</h2></div><span class="st ${cls}">${lbl}</span></div>
+  <dl class="rs-grid"><div><dt>Nomor tujuan</dt><dd>${x.t}</dd></div><div><dt>Nominal</dt><dd>${x.p?rp(x.p):'Sesuai tagihan'}</dd></div><div><dt>Tanggal</dt><dd>${fmt(x.d)}</dd></div>${x.pm?`<div><dt>Metode pembayaran</dt><dd>${x.pm}</dd></div>`:''}<div><dt>ID transaksi</dt><dd>${x.id}<button type="button" class="cp" data-l="Salin" onclick="copy('${x.id}',this)">Salin</button></dd></div></dl>
+  ${x.token&&x.s==='success'?`<div class="token"><div><p class="f-hint" style="margin:0 0 4px">Nomor token listrik</p><b>${x.token}</b></div><button type="button" class="btn-o" data-l="Salin Token" onclick="copy('${x.token.replace(/ /g,'')}',this)">Salin Token</button></div>`:''}
+  ${x.s==='failed'?`<div class="refund"><b>Dana kamu akan dikembalikan.</b> Refund otomatis diproses maks. 1×24 jam ke metode pembayaran asal. Jika belum diterima, hubungi CS dengan menyebutkan ID transaksi.<div style="margin-top:16px"><a class="btn-p btn-wa" style="height:40px" target="_blank" rel="noopener" href="https://wa.me/${SITE.waNumber}?text=${encodeURIComponent('Halo CS Aventiva, transaksi saya gagal. ID: '+x.id)}">Hubungi CS</a></div></div>`:''}
+  ${x.s==='pending'?`<p class="f-hint" style="margin-top:16px">Selesaikan pembayaran sebelum batas waktu agar pesanan diproses. (Mode pratinjau: belum ada pembayaran nyata.)</p>`:''}
+  <h3 style="font-size:15px;font-weight:700;margin-top:32px">Riwayat status</h3>${steps(x)}</section>`}
+function none(){$('res').innerHTML=`<section class="sp-card empty" style="margin-top:24px">
+ <svg width="120" height="96" viewBox="0 0 120 96" fill="none" aria-hidden="true"><rect x="20" y="8" width="64" height="80" rx="10" fill="#EEF0FF"/><path d="M34 28h36M34 42h36M34 56h20" stroke="#C7CBF5" stroke-width="5" stroke-linecap="round"/><circle cx="80" cy="60" r="18" fill="#fff" stroke="#4338CA" stroke-width="5"/><path d="m93 73 12 12" stroke="#4338CA" stroke-width="6" stroke-linecap="round"/><path d="M74 54l12 12M86 54 74 66" stroke="#FDB022" stroke-width="4" stroke-linecap="round"/></svg>
+ <p>Transaksi tidak ditemukan. Periksa kembali ID kamu atau hubungi CS.</p>
+ <a class="btn-o" style="margin-top:16px" href="/bantuan#kontak">Hubungi CS</a></section>`}
+function run(e){if(e)e.preventDefault();
+ const v=$('key').value.trim(),inp=$('key'),b=$('btn');
+ const okId=/^AVD-[A-Z0-9]{4,}$/i.test(v),okNum=/^\d{8,16}$/.test(v.replace(/[\s-]/g,''));
+ if(!v||!(okId||okNum)){inp.setAttribute('aria-invalid','true');$('err').textContent=v?'Format tidak valid. Gunakan ID transaksi (AVD-…) atau nomor 8–16 digit.':'Kolom ini wajib diisi.';inp.focus();return}
+ inp.removeAttribute('aria-invalid');$('err').textContent='';
+ b.disabled=true;b.innerHTML='<span class="spin" aria-hidden="true"></span> Memeriksa…';$('res').innerHTML='';
+ setTimeout(()=>{b.disabled=false;b.textContent='Cek Status';
+  const k=v.toUpperCase(),n=v.replace(/[\s-]/g,'');
+  const x=all().find(t=>okId?t.id.toUpperCase()===k:t.t===n);x?show(x):none()},700)}
+$('f').addEventListener('submit',run);
+$('key').addEventListener('input',()=>{if($('err').textContent){$('err').textContent='';$('key').removeAttribute('aria-invalid')}});
+const pre=new URLSearchParams(location.search).get('id');if(pre){$('key').value=pre;run()}
+</script>
+</body></html>

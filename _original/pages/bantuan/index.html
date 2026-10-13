@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pusat Bantuan — Aventiva Digital</title>
+<link rel="stylesheet" href="/assets/theme.css">
+<script src="https://cdn.moda.app/runtime-libs/tailwind-browser-4.1.13-index.global.min.js"></script><style data-moda-export-fonts="true">@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-extralight.ttf") format("truetype"); font-style: normal; font-weight: 200; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-extralightitalic.ttf") format("truetype"); font-style: italic; font-weight: 200; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-light.ttf") format("truetype"); font-style: normal; font-weight: 300; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-lightitalic.ttf") format("truetype"); font-style: italic; font-weight: 300; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-regular.ttf") format("truetype"); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-italic.ttf") format("truetype"); font-style: italic; font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-medium.ttf") format("truetype"); font-style: normal; font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-mediumitalic.ttf") format("truetype"); font-style: italic; font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-semibold.ttf") format("truetype"); font-style: normal; font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-semibolditalic.ttf") format("truetype"); font-style: italic; font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-bold.ttf") format("truetype"); font-style: normal; font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-bolditalic.ttf") format("truetype"); font-style: italic; font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-extrabold.ttf") format("truetype"); font-style: normal; font-weight: 800; font-display: swap; }
+@font-face { font-family: 'Plus Jakarta Sans'; src: url("../../fonts/plusjakartasans-extrabolditalic.ttf") format("truetype"); font-style: italic; font-weight: 800; font-display: swap; }</style></head><body>
+<header id="site-header"></header>
+<main class="wrap sp pb-5">
+ <nav class="crumb" aria-label="Breadcrumb"><a href="/">Beranda</a><span aria-hidden="true">›</span><span aria-current="page">Bantuan</span></nav>
+ <section class="hb-hero">
+  <h1>Ada yang bisa kami bantu?</h1>
+  <p>Cari jawaban cepat seputar transaksi, pembayaran, dan akun.</p>
+  <div class="hb-search f-field" role="search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+   <input id="fq" class="f-inp" type="search" placeholder="Cari pertanyaan, misal: token PLN, refund…" aria-label="Cari pertanyaan" aria-controls="faq"></div>
+ </section>
+ <div class="cat-grid" id="cats" role="group" aria-label="Filter kategori bantuan"></div>
+ <div class="sec-h" id="faq-h"><h2 id="faqt">Pertanyaan Umum</h2><button class="btn-o" id="reset" hidden="">Tampilkan semua</button></div>
+ <div class="faq" id="faq"></div>
+ <div id="fempty" class="sp-card empty" hidden="">
+  <svg width="96" height="80" viewBox="0 0 96 80" fill="none" aria-hidden="true"><circle cx="40" cy="36" r="24" fill="#EEF0FF" stroke="#4338CA" stroke-width="5"></circle><path d="m58 54 16 16" stroke="#4338CA" stroke-width="6" stroke-linecap="round"></path><path d="M33 30c0-4 3-7 7-7s7 3 7 7c0 5-7 5-7 10M40 47h.01" stroke="#FDB022" stroke-width="4" stroke-linecap="round"></path></svg>
+  <p>Tidak ada pertanyaan yang cocok dengan “<span id="fqv"></span>”. Coba kata lain atau hubungi CS di bawah.</p>
+ </div>
+ <div class="sec-h" id="kontak"><h2>Masih butuh bantuan?</h2></div>
+ <div class="ct-grid" id="ct"></div>
+</main>
+<dialog id="buy"></dialog><div id="toast"></div>
+<script src="/assets/config.js"></script>
+<script src="/assets/shop.js"></script>
+<script src="/assets/header.js"></script>
+<script src="/assets/footer.js"></script>
+<script>
+const sv=(d,w=24)=>`<svg width="${w}" height="${w}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const CATG=[
+ ['cara','Cara Transaksi','Langkah membeli produk digital','<path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="m9 14 2 2 4-4"/>'],
+ ['bayar','Pembayaran','Metode, biaya admin & refund','<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>'],
+ ['masalah','Masalah Transaksi','Pulsa/token belum masuk, salah nomor','<circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/>'],
+ ['akun','Akun & Keamanan','Keamanan data & menghubungi CS','<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>']];
+const FAQ=[
+ ['cara','Bagaimana cara membeli pulsa atau token PLN?','Pilih kategori (Pulsa atau Token PLN), pilih nominal, lalu klik <b>Beli</b>. Masukkan nomor HP atau nomor meter/ID pelanggan, periksa total harga termasuk biaya admin, lalu lanjutkan pembayaran. Pulsa atau token dikirim otomatis setelah pembayaran diterima.'],
+ ['cara','Bagaimana cara cek status transaksi?','Buka halaman <a href="/cek-transaksi">Cek Transaksi</a>, lalu masukkan ID transaksi (diawali AVD-) atau nomor tujuan. Status dan riwayat prosesnya akan tampil tanpa perlu login.'],
+ ['cara','Apakah transaksi bisa dilakukan 24 jam?','Bisa. Sistem kami memproses transaksi secara otomatis 24/7. Pada jam pemeliharaan operator atau bank tertentu (biasanya dini hari), proses bisa sedikit lebih lama.'],
+ ['bayar','Metode pembayaran apa saja yang tersedia?','QRIS, transfer bank / virtual account (BCA, Mandiri, BNI, BRI), serta e-wallet seperti GoPay, OVO, DANA, dan ShopeePay.'],
+ ['bayar','Apakah ada biaya admin?','Ada untuk sebagian produk, terutama pembayaran tagihan. Biaya admin selalu ditampilkan terpisah sebelum kamu membayar, jadi tidak ada biaya tersembunyi.'],
+ ['bayar','Berapa lama proses refund?','Refund untuk transaksi gagal diproses otomatis maksimal 1×24 jam ke metode pembayaran asal. Waktu dana masuk ke rekening/e-wallet bisa bergantung pada bank atau penyedia e-wallet.'],
+ ['masalah','Pulsa belum masuk, apa yang harus dilakukan?','Cek dulu statusnya di <a href="/cek-transaksi">Cek Transaksi</a>. Jika status <b>Diproses</b>, tunggu hingga 15 menit karena operator kadang mengalami antrean. Jika lebih dari 1 jam atau status <b>Gagal</b>, hubungi CS dengan menyertakan ID transaksi.'],
+ ['masalah','Token PLN belum diterima.','Nomor token tampil di halaman <a href="/cek-transaksi">Cek Transaksi</a> begitu status <b>Berhasil</b>, lengkap dengan tombol salin. Jika status berhasil tetapi token tidak tampil, hubungi CS dan sebutkan ID transaksi serta nomor meter.'],
+ ['masalah','Salah input nomor tujuan, bisa dibatalkan?','Transaksi yang sudah diproses ke operator tidak bisa dibatalkan karena dikirim otomatis. Jika status masih <b>Menunggu Pembayaran</b>, cukup jangan lanjutkan pembayaran. Untuk kasus lain, segera hubungi CS agar kami bantu cek.'],
+ ['akun','Bagaimana menghubungi CS?','Hubungi kami lewat WhatsApp atau email di bagian <a href="#kontak">Masih butuh bantuan?</a> di bawah. Sertakan ID transaksi agar kami bisa membantu lebih cepat.'],
+ ['akun','Apakah data saya aman?','Kami hanya meminta data yang diperlukan untuk transaksi (nomor tujuan) dan tidak membagikannya ke pihak lain di luar proses transaksi.'],
+ ['akun','Apakah saya perlu membuat akun?','Tidak. Kamu bisa membeli dan mengecek status transaksi tanpa login. Simpan ID transaksi untuk pengecekan.']];
+let cat=new URLSearchParams(location.search).get('k')||'',q='';
+const $=i=>document.getElementById(i);
+$('cats').innerHTML=CATG.map(([k,t,d,i])=>`<button class="cat-card" data-k="${k}" aria-pressed="${k===cat}"><span class="ci">${sv(i)}</span><b>${t}</b><span>${d}</span></button>`).join('');
+$('faq').innerHTML=FAQ.map(([k,qq,a],n)=>`<div class="faq-i" data-k="${k}" data-s="${(qq+' '+a.replace(/<[^>]+>/g,'')).toLowerCase()}"><button class="faq-q" id="q${n}" aria-expanded="false" aria-controls="a${n}">${qq}${sv('<path d="m6 9 6 6 6-6"/>',20)}</button><div class="faq-a" id="a${n}" role="region" aria-labelledby="q${n}"><div><p>${a}</p></div></div></div>`).join('');
+const items=[...document.querySelectorAll('.faq-i')];
+items.forEach(it=>it.querySelector('.faq-q').onclick=()=>{const o=!it.classList.contains('open');items.forEach(x=>{x.classList.remove('open');x.querySelector('.faq-q').setAttribute('aria-expanded','false')});if(o){it.classList.add('open');it.querySelector('.faq-q').setAttribute('aria-expanded','true')}});
+function apply(){let n=0;items.forEach(it=>{const ok=(!cat||it.dataset.k===cat)&&(!q||it.dataset.s.includes(q));it.hidden=!ok;if(ok)n++});
+ $('faq').hidden=!n;$('fempty').hidden=!!n;$('fqv').textContent=q;
+ document.querySelectorAll('.cat-card').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===cat));
+ $('faqt').textContent=cat?CATG.find(c=>c[0]===cat)[1]:'Pertanyaan Umum';$('reset').hidden=!cat&&!q}
+document.querySelectorAll('.cat-card').forEach(b=>b.onclick=()=>{cat=cat===b.dataset.k?'':b.dataset.k;apply();$('faq-h').scrollIntoView({behavior:'smooth',block:'start'})});
+$('fq').oninput=e=>{q=e.target.value.trim().toLowerCase();apply()};
+$('reset').onclick=()=>{cat='';q='';$('fq').value='';apply()};
+apply();
+$('ct').innerHTML=`
+ <div class="ct"><span class="ci" style="background:#DCFCE7;color:#15803D">${sv('<path d="M3 21l1.7-4.6A9 9 0 1 1 8 19.6z"/>')}</span><b>WhatsApp CS</b><p>${SITE.waDisplay}<br>Respons tercepat untuk kendala transaksi.</p><a class="btn-p btn-wa" target="_blank" rel="noopener" href="https://wa.me/${SITE.waNumber}">Chat WhatsApp</a></div>
+ <div class="ct"><span class="ci" style="background:#EEF0FF;color:#4338CA">${sv('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>')}</span><b>Email</b><p>${SITE.email}<br>Dibalas maks. 1×24 jam kerja.</p><a class="btn-o" href="mailto:${SITE.email}">Kirim Email</a></div>
+ <div class="ct"><span class="ci" style="background:#FFF4DB;color:#B45309">${sv('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>')}</span><b>Jam Operasional CS</b><p>${SITE.hours}<br>${SITE.hoursNote}.</p></div>`;
+</script>
+</body></html>

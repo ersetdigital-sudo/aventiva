@@ -1,0 +1,136 @@
+- generic [active] [ref=f7e1]:
+  - link "Lompat ke konten utama" [ref=f7e2] [cursor=pointer]:
+    - /url: "#main"
+  - main [ref=f7e3]:
+    - navigation "Breadcrumb" [ref=f7e4]:
+      - link "Beranda" [ref=f7e5] [cursor=pointer]:
+        - /url: /
+      - generic [aria-hidden] [ref=f7e6]: ›
+      - generic [ref=f7e7]: Cek Transaksi
+    - generic [ref=f7e8]:
+      - heading "Cek Status Transaksi" [level=1] [ref=f7e9]
+      - paragraph [ref=f7e10]: Masukkan ID transaksi atau nomor tujuan untuk melihat status pesananmu.
+      - generic [ref=f7e11]:
+        - generic [ref=f7e12]: ID Transaksi / Nomor HP / ID Pelanggan
+        - textbox "ID Transaksi / Nomor HP / ID Pelanggan" [ref=f7e14]:
+          - /placeholder: "Contoh: AVD-DEMO1 atau 081234567890"
+        - alert [ref=f7e15]
+        - paragraph [ref=f7e16]: "Coba data contoh: AVD-DEMO1 (berhasil, token PLN), AVD-DEMO2 (diproses), AVD-DEMO3 (gagal), AVD-DEMO4 (menunggu), AVD-DEMO5 (kedaluwarsa)."
+        - button "Cek Status" [ref=f7e17] [cursor=pointer]
+      - link "Butuh bantuan? Hubungi kami" [ref=f7e18] [cursor=pointer]:
+        - /url: /bantuan
+        - generic [aria-hidden] [ref=f7e20]: →
+  - contentinfo [ref=f7e21]:
+    - generic [ref=f7e23]:
+      - generic [ref=f7e29]:
+        - generic [ref=f7e30]: Harga Transparan
+        - paragraph [ref=f7e31]: Biaya admin terlihat sebelum bayar
+      - generic [ref=f7e36]:
+        - generic [ref=f7e37]: Transaksi Cepat
+        - paragraph [ref=f7e38]: Proses otomatis 24/7
+      - generic [ref=f7e44]:
+        - generic [ref=f7e45]: Pembayaran Aman
+        - paragraph [ref=f7e46]: Berbagai metode pembayaran resmi
+    - generic [ref=f7e47]:
+      - generic [ref=f7e48]:
+        - link "aventiva." [ref=f7e49] [cursor=pointer]:
+          - /url: /
+        - paragraph [ref=f7e50]: Platform pembelian pulsa, paket data, token PLN, e-wallet, dan pembayaran tagihan dengan harga jelas dan proses otomatis.
+        - generic [ref=f7e51]:
+          - link "Instagram" [ref=f7e52] [cursor=pointer]:
+            - /url: "#"
+          - link "Facebook" [ref=f7e56] [cursor=pointer]:
+            - /url: "#"
+          - link "TikTok" [ref=f7e59] [cursor=pointer]:
+            - /url: "#"
+          - link "WhatsApp" [ref=f7e63] [cursor=pointer]:
+            - /url: https://wa.me/6281200000000
+      - generic [ref=f7e67]:
+        - button "Produk" [ref=f7e68]
+        - list [ref=f7e69]:
+          - listitem [ref=f7e70]:
+            - link "Pulsa" [ref=f7e71] [cursor=pointer]:
+              - /url: /layanan?c=pulsa
+          - listitem [ref=f7e72]:
+            - link "Paket Data" [ref=f7e73] [cursor=pointer]:
+              - /url: /layanan?c=data
+          - listitem [ref=f7e74]:
+            - link "Token PLN" [ref=f7e75] [cursor=pointer]:
+              - /url: /layanan?c=pln
+          - listitem [ref=f7e76]:
+            - link "E-Wallet" [ref=f7e77] [cursor=pointer]:
+              - /url: /layanan?c=ewallet
+          - listitem [ref=f7e78]:
+            - link "Internet" [ref=f7e79] [cursor=pointer]:
+              - /url: /layanan?c=internet
+          - listitem [ref=f7e80]:
+            - link "BPJS" [ref=f7e81] [cursor=pointer]:
+              - /url: /layanan?c=bpjs
+          - listitem [ref=f7e82]:
+            - link "PDAM" [ref=f7e83] [cursor=pointer]:
+              - /url: /layanan?c=pdam
+          - listitem [ref=f7e84]:
+            - link "Multifinance" [ref=f7e85] [cursor=pointer]:
+              - /url: /layanan?c=finance
+      - generic [ref=f7e86]:
+        - button "Bantuan" [ref=f7e87]
+        - list [ref=f7e88]:
+          - listitem [ref=f7e89]:
+            - link "Cara Transaksi" [ref=f7e90] [cursor=pointer]:
+              - /url: /bantuan?k=cara
+          - listitem [ref=f7e91]:
+            - link "Cek Transaksi" [ref=f7e92] [cursor=pointer]:
+              - /url: /cek-transaksi
+          - listitem [ref=f7e93]:
+            - link "FAQ" [ref=f7e94] [cursor=pointer]:
+              - /url: /bantuan#faq
+          - listitem [ref=f7e95]:
+            - link "Hubungi Kami" [ref=f7e96] [cursor=pointer]:
+              - /url: /bantuan#kontak
+          - listitem [ref=f7e97]:
+            - link "Pusat Bantuan" [ref=f7e98] [cursor=pointer]:
+              - /url: /bantuan
+      - generic [ref=f7e99]:
+        - button "Perusahaan" [ref=f7e100]
+        - list [ref=f7e101]:
+          - listitem [ref=f7e102]:
+            - link "Tentang Kami" [ref=f7e103] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=f7e104]:
+            - link "Syarat & Ketentuan" [ref=f7e105] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=f7e106]:
+            - link "Kebijakan Privasi" [ref=f7e107] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=f7e108]:
+            - link "Kemitraan/Reseller" [ref=f7e109] [cursor=pointer]:
+              - /url: "#"
+    - generic [ref=f7e110]:
+      - generic [ref=f7e111]:
+        - 'link "WhatsApp CS: +62 812-0000-0000" [ref=f7e112] [cursor=pointer]':
+          - /url: https://wa.me/6281200000000
+        - link "cs@aventivadigital.net" [ref=f7e117] [cursor=pointer]:
+          - /url: mailto:cs@aventivadigital.net
+        - generic [ref=f7e122]: "CS: Setiap hari, 08.00–22.00 WIB"
+      - generic [ref=f7e127]:
+        - generic [ref=f7e128]: Metode pembayaran
+        - generic [ref=f7e129]:
+          - generic [ref=f7e130]: QRIS
+          - generic [ref=f7e131]: BCA
+          - generic [ref=f7e132]: Mandiri
+          - generic [ref=f7e133]: BNI
+          - generic [ref=f7e134]: BRI
+          - generic [ref=f7e135]: GoPay
+          - generic [ref=f7e136]: OVO
+          - generic [ref=f7e137]: DANA
+          - generic [ref=f7e138]: ShopeePay
+    - generic [ref=f7e140]:
+      - generic [ref=f7e141]: © 2026 Aventiva Digital. Seluruh hak dilindungi.
+      - navigation [ref=f7e142]:
+        - link "Syarat & Ketentuan" [ref=f7e143] [cursor=pointer]:
+          - /url: "#"
+        - generic [aria-hidden] [ref=f7e144]: "|"
+        - link "Kebijakan Privasi" [ref=f7e145] [cursor=pointer]:
+          - /url: "#"
+  - button "Kembali ke atas"
+  - button "Open Next.js Dev Tools" [ref=f7e151] [cursor=pointer]
