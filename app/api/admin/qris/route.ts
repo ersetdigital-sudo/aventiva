@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { isAdmin } from "@/lib/admin-auth";
-import { ASSET_BUCKET, SUPABASE_KEY, SUPABASE_URL } from "@/lib/supabase";
+import { ASSET_BUCKET, createServerSupabase, SUPABASE_KEY, SUPABASE_URL } from "@/lib/supabase";
 
 /** Upload gambar QRIS ke Supabase Storage (bucket publik `assets/qris.png`). */
 export const runtime = "nodejs";
@@ -45,39 +45,27 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "Ukuran maksimal 4 MB." }, { status: 400 });
   }
 
-  const body = Buffer.from(await file.arrayBuffer());
-  const url = `${SUPABASE_URL}/storage/v1/object/${ASSET_BUCKET}/${OBJECT}?upsert=true`;
-
-  // PUT = timpa objek yang sudah ada; x-upsert mengizinkan tumpang tindih.
-  let res = await fetch(url, {
-    method: "PUT",
-    headers: {
-      Authorization: `Bearer ${SUPABASE_KEY}`,
-      apikey: SUPABASE_KEY,
-      "Content-Type": file.type,
-      "x-upsert": "true",
-    },
-    body,
-  });
-
-  // cadangan: metode POST bila proyek menolak PUT
-  if (!res.ok) {
-    res = await fetch(url, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${SUPABASE_KEY}`,
-        apikey: SUPABASE_KEY,
-        "Content-Type": file.type,
-        "x-upsert": "true",
-      },
-      body,
-    });
+  const sb = createServerSupabase();
+  if (!sb) {
+    return NextResponse.json(
+      { ok: false, error: "Supabase belum dikonfigurasi (isi kunci lewat Secrets)" },
+      { status: 500 },
+    );
   }
 
-  if (!res.ok) {
-    const detail = await res.text().catch(() => "");
+  // Pakai SDK Storage: ia mengirim kunci format baru (sb_publishable_…/sbp_…)
+  // dengan benar. JANGAN kirim kunci ini sebagai `Authorization: Bearer` —
+  // Supabase Storage menolaknya sebagai JWT tidak valid.
+  const { error } = await sb.storage
+    .from(ASSET_BUCKET)
+    .upload(OBJECT, await file.arrayBuffer(), {
+      contentType: file.type,
+      upsert: true,
+    });
+
+  if (error) {
     return NextResponse.json(
-      { ok: false, error: `Gagal upload (HTTP ${res.status}).`, detail: detail.slice(0, 400) },
+      { ok: false, error: `Gagal upload: ${error.message}` },
       { status: 502 },
     );
   }
