@@ -23,11 +23,20 @@ export function createAdminSupabase(): SupabaseClient | null {
 }
 
 /**
- * Klien baca untuk server: pakai kunci rahasia bila ada, kalau tidak kunci
- * publishable (boleh membaca katalog & transaksi lewat RLS). Mode baca ini
- * yang membuat panel admin tetap berguna sebelum kunci rahasia diisi.
+ * Klien baca untuk server: SELALU memakai kunci publishable.
+ *
+ * Semua tabel yang dibaca panel admin (categories, products, faqs,
+ * site_settings, transactions) punya policy `for select to anon using (true)`,
+ * jadi kunci publishable sudah cukup dan hasilnya identik. Keuntungannya:
+ * panel admin tetap bisa membaca walau kunci rahasia belum diisi ATAU salah/
+ * ditolak Supabase (dulu kunci rahasia yang salah membuat semua endpoint baca
+ * balas 502 → "Gagal memuat katalog").
+ *
+ * Menulis tetap WAJIB kunci rahasia: pakai createAdminSupabase().
+ * Kalau suatu saat policy baca itu diperketat (mis. transaksi berbasis
+ * auth.uid()), pindahkan baca kembali ke createAdminSupabase().
  */
 export function createReadSupabase(): SupabaseClient | null {
   if (!supabaseEnabled) return null;
-  return createAdminSupabase() ?? createServerSupabase();
+  return createServerSupabase();
 }

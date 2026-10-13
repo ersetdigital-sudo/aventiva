@@ -48,11 +48,21 @@ Catatan setup (hal yang tidak terlihat dari manifest):
   8 jam. Karena turunan dari ADMIN_KEY, mengganti ADMIN_KEY otomatis membatalkan sesi lama.
   `/admin` redirect ke `/admin/login` bila cookie tidak valid; keluar lewat
   `POST /api/admin/logout`.
-- **Menulis hanya lewat kunci rahasia server.** Semua route `/api/admin/*` memakai
+- **Baca pakai kunci publishable, tulis wajib kunci rahasia.**
+  Route **baca** (`overview`, `products` GET, `transactions` GET) memakai
+  `createReadSupabase()` = kunci publishable, sebab semua tabel yang dibaca punya policy
+  `for select to anon using (true)` dan GRANT select — hasilnya identik.
+  Route **tulis** (`products` POST, `products/[id]`, `transactions/[id]`, `qris`) memakai
   `createAdminSupabase()` (`lib/supabase-admin.ts`, env `SUPABASE_SECRET_KEY` = kunci
-  `sb_secret_…`) sebab kunci publishable tidak boleh menulis ke tabel katalog (RLS hanya
-  memberi GRANT select). Tanpa kunci rahasia dashboard jatuh ke mode baca dan UI-nya
-  memberi tahu.
+  `sb_secret_…`), sebab kunci publishable tidak boleh menulis ke tabel katalog.
+  Jangan kembalikan baca ke kunci rahasia: kunci rahasia yang **salah/kedaluwarsa** dulu
+  membuat semua endpoint baca balas 502 → UI "Gagal memuat katalog" (kejadian 13 Okt 2026,
+  lihat `git log`), padahal Supabase-nya sendiri menolak kunci itu dengan 401.
+  Kalau nanti policy baca diperketat (mis. transaksi berbasis `auth.uid()`), baru pindahkan
+  baca kembali ke `createAdminSupabase()`.
+- **`canWrite` (di `/api/admin/overview`) hanya berarti "SUPABASE_SECRET_KEY terisi"**, bukan
+  "kunci diterima Supabase". Jadi tombol simpan bisa tetap gagal walau UI bilang bisa menulis;
+  pesan aslinya dari Supabase ("Invalid API key") tampil di panel.
 - **Setelah produk diubah**, route memanggil `revalidate()` (`lib/db.ts`) supaya cache
   katalog 30 detik di situs langsung bersih.
 - **Route**: `login` · `logout` · `overview` (jumlah baris + statistik transaksi) ·
