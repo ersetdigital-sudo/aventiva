@@ -307,7 +307,8 @@ dialog::backdrop{background:rgba(15,23,42,.5)}
 .adm-kick{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#FDB022}
 .adm-head h1{margin-top:8px;font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
 .adm-head p{margin-top:6px;font-size:13px;line-height:1.55;color:rgba(255,255,255,.76);max-width:54ch}
-.adm-out{position:relative;z-index:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:42px;padding:0 18px;border-radius:12px;border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.1);color:#fff;font-size:14px;font-weight:700;transition:background .2s,color .2s,border-color .2s;cursor:pointer}
+.adm-out{position:absolute;top:16px;right:16px;z-index:2;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;border-radius:12px;border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.1);color:#fff;transition:background .2s,color .2s,border-color .2s;cursor:pointer}
+.adm-head-main{padding-right:52px}
 .adm-out:hover{background:#fff;border-color:#fff;color:#1B1B4B}
 .adm-tabs{display:flex;gap:6px;margin-top:14px;padding:6px;background:#fff;border:1px solid #E7E7EF;border-radius:999px;box-shadow:0 1px 2px rgba(15,23,42,.04);overflow-x:auto;scrollbar-width:none}
 .adm-tabs::-webkit-scrollbar{display:none}
@@ -434,15 +435,16 @@ dialog::backdrop{background:rgba(15,23,42,.5)}
  .adm-tbl .adm-actions>.adm-btn{flex:1 1 auto}
  .adm-tbl .adm-mono{font-size:12.5px}
  .adm-empty{padding:4px 0;text-align:left}
- /* Tab jadi segmented control 3 kolom: tidak ada geser samping, ikon di atas label. */
- .adm-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:5px;border-radius:18px;overflow:visible}
- .adm-tab{flex-direction:column;gap:5px;height:auto;min-height:52px;padding:7px 6px;border-radius:14px;font-size:11.5px;font-weight:700;line-height:1.25;white-space:normal;text-align:center}
+ /* Tab & filter jadi daftar 1 kolom ke bawah: tidak ada geser samping. */
+ .adm-tabs{display:flex;flex-direction:column;gap:6px;padding:6px;border-radius:18px;overflow:visible}
+ .adm-tab{flex:1 1 auto;width:100%;justify-content:flex-start;gap:10px;height:46px;padding:0 14px;border-radius:14px;font-size:13.5px;font-weight:700}
+ .adm-chips{flex-direction:column;gap:6px;overflow:visible;padding-bottom:0}
+ .adm-chip{flex:0 0 auto;width:100%;justify-content:flex-start;height:40px;padding:0 14px;border-radius:12px;font-size:13px}
 }
 @media(max-width:767px){
  .adm-head{padding:18px;border-radius:16px}
  .adm-head h1{font-size:20px}
  .adm-head p{font-size:12.5px}
- .adm-out{width:100%}
  .adm-card{padding:16px;border-radius:16px}
  .adm-drop{width:100%;height:200px}
  .adm-search{flex:0 1 100%}

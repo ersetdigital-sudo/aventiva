@@ -37,9 +37,8 @@ export function AdminDashboard() {
           <h1>Panel Admin</h1>
           <p>Kelola katalog, harga, dan pantau aktivitas transaksi dari satu tempat.</p>
         </div>
-        <button type="button" className="adm-out" onClick={logout}>
-          <Icon name="x" width={16} height={16} />
-          Keluar
+        <button type="button" className="adm-out" onClick={logout} aria-label="Keluar" title="Keluar">
+          <Icon name="logout" width={18} height={18} />
         </button>
       </header>
 
