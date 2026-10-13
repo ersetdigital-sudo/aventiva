@@ -1,0 +1,22 @@
+{
+  "previewPort": 3000,
+  "healthPath": "/",
+  "startCommand": "docker compose -f docker-compose.base44.yml up -d --build",
+  "secrets": [
+    {
+      "name": "NEXT_PUBLIC_SUPABASE_URL",
+      "description": "URL proyek Supabase (Dashboard Supabase -> Project Settings -> API). Opsional: tanpa nilai ini situs berjalan dengan data statis dari data/.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
+      "description": "Kunci publishable Supabase (sbp_...). Opsional, dipakai bareng URL di atas untuk mengaktifkan database + storage.",
+      "requiredAtBoot": false
+    },
+    {
+      "name": "ADMIN_KEY",
+      "description": "Kunci rahasia panel /admin (upload gambar QRIS). Di sandbox ada placeholder di .env.base44-defaults; ganti dengan nilai sendiri bila perlu.",
+      "requiredAtBoot": false
+    }
+  ]
+}

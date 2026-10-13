@@ -1,0 +1,58 @@
+# Base44 sandbox runtime — development mode.
+#
+# Runs the Next.js app straight from the cloned source (bind mount + `next dev`),
+# so every edit in the sandbox is picked up without rebuilding an image.
+# The repo's own deployment config is deliberately not used here: it serves a
+# prebuilt production bundle, which would freeze the code.
+#
+#   docker compose -f docker-compose.base44.yml up -d --build
+#
+# Frontend: http://localhost:3000  (the sandbox preview proxy points here)
+name: aventiva-digital
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.base44
+    restart: on-failure
+    ports:
+      - "3000:3000"
+    working_dir: /app
+    environment:
+      # Passed through from the sandbox; gates the preview-only overrides in
+      # next.config.ts (origin allowlist for dev assets/HMR). Absent = normal.
+      - BASE44_PREVIEW_MODE
+      - BASE44_PUBLIC_HOST_SUFFIX
+      # Bind mounts on some hosts miss inotify events — poll so hot reload fires.
+      - WATCHPACK_POLLING=true
+    env_file:
+      # Placeholders first, platform-managed secrets last so they always win.
+      - ./.env.base44-defaults
+      - /run/base44/app.env
+    volumes:
+      - ./:/app
+      # Dependencies installed at image build; kept out of the bind mount.
+      - node_modules:/app/node_modules
+    # Sync deps from the lockfile on start (fast no-op when already satisfied),
+    # then run the live-reload dev server on 0.0.0.0.
+    command:
+      - sh
+      - -ec
+      - |
+        npm install --no-audit --no-fund --prefer-offline
+        exec npx next dev -H 0.0.0.0 -p 3000
+    healthcheck:
+      # Node is already in the image; no extra tooling needed.
+      test:
+        - CMD
+        - node
+        - -e
+        - fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 90s
+
+volumes:
+  node_modules:
