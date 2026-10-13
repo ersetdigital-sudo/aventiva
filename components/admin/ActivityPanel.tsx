@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Icon } from "@/lib/icons";
-import { STATUS_CLASS, STATUS_LABEL, STATUS_ORDER, type AdminOverview, type AdminTransaction } from "@/lib/admin-types";
+import { STATUS_LABEL, STATUS_ORDER, type AdminOverview, type AdminTransaction } from "@/lib/admin-types";
 import { fmtDate, rp } from "@/lib/format";
 import type { Status } from "@/lib/tx-types";
 
@@ -203,22 +203,19 @@ export function ActivityPanel() {
                       <span className="adm-muted">{fmtDate(Date.parse(t.created_at))}</span>
                     </td>
                     <td data-label="Status" className="adm-td-act">
-                      <div className="adm-status">
-                        <span className={`st ${STATUS_CLASS[t.status]}`}>{STATUS_LABEL[t.status]}</span>
-                        <select
-                          className="adm-sel adm-sel--sm adm-sel--status"
-                          value={t.status}
-                          disabled={busyId === t.id || (overview ? !overview.canWrite : false)}
-                          aria-label={`Ubah status ${t.id}`}
-                          onChange={(e) => void updateStatus(t.id, e.target.value as Status)}
-                        >
-                          {STATUS_ORDER.map((s) => (
-                            <option key={s} value={s}>
-                              {STATUS_LABEL[s]}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
+                      <select
+                        className="adm-sel adm-sel--sm adm-sel--status"
+                        value={t.status}
+                        disabled={busyId === t.id || (overview ? !overview.canWrite : false)}
+                        aria-label={`Ubah status ${t.id}`}
+                        onChange={(e) => void updateStatus(t.id, e.target.value as Status)}
+                      >
+                        {STATUS_ORDER.map((s) => (
+                          <option key={s} value={s}>
+                            {STATUS_LABEL[s]}
+                          </option>
+                        ))}
+                      </select>
                     </td>
                   </tr>
                 ))
