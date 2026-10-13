@@ -435,6 +435,29 @@ dialog::backdrop{background:rgba(15,23,42,.5)}
  .adm-tbl .adm-actions>.adm-btn{flex:1 1 auto}
  .adm-tbl .adm-mono{font-size:12.5px}
  .adm-empty{padding:4px 0;text-align:left}
+ /* Kartu transaksi versi mobile: ID + nominal di baris atas, produk jadi judul,
+    tujuan & waktu berdampingan, kontrol status terpisah di bawah garis. */
+ .adm-tbl.adm-tbl--tx tbody tr{display:flex;flex-wrap:wrap;align-items:center;gap:0;padding:15px 16px;border-radius:18px}
+ .adm-tbl.adm-tbl--tx tbody td:not([colspan]){display:block;padding:0;border:0;font-size:13px;line-height:1.45}
+ .adm-tbl.adm-tbl--tx tbody td:not([colspan])::before{content:none;display:none}
+ .adm-tbl.adm-tbl--tx tbody td:not([colspan]):nth-child(1){order:1;display:flex;width:auto}
+ .adm-tbl.adm-tbl--tx tbody td:not([colspan]):nth-child(1) .adm-mono{border-radius:999px;padding:4px 11px;font-size:11.5px;font-weight:700;background:#F3F3FA}
+ .adm-tbl.adm-tbl--tx tbody td:not([colspan]):nth-child(4){order:2;margin-left:auto;text-align:right}
+ .adm-tbl.adm-tbl--tx tbody td:not([colspan]):nth-child(4) .adm-strong{font-size:16px;font-weight:800;letter-spacing:-.02em;color:#111827}
+ .adm-tbl.adm-tbl--tx tbody td:not([colspan]):nth-child(2){order:3;width:100%;margin-top:9px}
+ .adm-tbl.adm-tbl--tx tbody td:not([colspan]):nth-child(2) .adm-strong{font-size:14px;font-weight:700;line-height:1.4;color:#1F2937}
+ .adm-tbl.adm-tbl--tx tbody td:not([colspan]):nth-child(2) .adm-muted{font-size:12.5px;font-weight:600}
+ .adm-tbl.adm-tbl--tx tbody td:not([colspan]):nth-child(3),
+ .adm-tbl.adm-tbl--tx tbody td:not([colspan]):nth-child(5){order:4;margin-top:14px;font-size:13px;font-weight:700;color:#374151;white-space:normal}
+ .adm-tbl.adm-tbl--tx tbody td:not([colspan]):nth-child(3){width:41%;padding-right:8px}
+ .adm-tbl.adm-tbl--tx tbody td:not([colspan]):nth-child(5){order:5;width:59%;padding-left:12px}
+ .adm-tbl.adm-tbl--tx tbody td:not([colspan]):nth-child(5) .adm-muted{font-size:inherit;font-weight:inherit;color:inherit}
+ .adm-tbl.adm-tbl--tx tbody td:not([colspan]):nth-child(3)::before{content:"Tujuan"}
+ .adm-tbl.adm-tbl--tx tbody td:not([colspan]):nth-child(5)::before{content:"Waktu"}
+ .adm-tbl.adm-tbl--tx tbody td:not([colspan]):nth-child(3)::before,
+ .adm-tbl.adm-tbl--tx tbody td:not([colspan]):nth-child(5)::before{display:block;margin-bottom:4px;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#9A9AB0}
+ .adm-tbl.adm-tbl--tx tbody td:not([colspan]):nth-child(6){order:6;width:100%;margin-top:14px;padding-top:14px;border-top:1px solid #F1F1F7}
+ .adm-tbl.adm-tbl--tx tbody td:not([colspan]):nth-child(6) .adm-sel--status{width:100%;min-width:0}
  /* Tab & filter jadi daftar 1 kolom ke bawah: tidak ada geser samping. */
  .adm-tabs{display:flex;flex-direction:column;gap:6px;padding:6px;border-radius:18px;overflow:visible}
  .adm-tab{flex:1 1 auto;width:100%;justify-content:flex-start;gap:10px;height:46px;padding:0 14px;border-radius:14px;font-size:13.5px;font-weight:700}

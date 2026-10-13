@@ -160,7 +160,7 @@ export function ActivityPanel() {
           </p>
         )}
 
-        <div className="adm-tbl">
+        <div className="adm-tbl adm-tbl--tx">
           <table>
             <thead>
               <tr>
