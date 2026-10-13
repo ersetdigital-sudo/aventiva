@@ -14,7 +14,16 @@ export default async function AdminLoginPage() {
   if (await isAdmin()) redirect("/admin");
 
   return (
-    <main id="main" className="wrap grid min-h-[70vh] place-items-center py-10 sm:py-14">
+    <main
+      id="main"
+      className="grid place-items-center px-4 py-10 sm:px-6"
+      // Halaman ini tampil tanpa header/footer toko (lihat app/layout.tsx),
+      // jadi latarnya dibuat penuh satu layar dengan warna brand.
+      style={{
+        minHeight: "100dvh",
+        background: "linear-gradient(160deg,#1B1B4B 0%,#312E81 60%,#4338CA 100%)",
+      }}
+    >
       <AdminLogin />
     </main>
   );

@@ -1,17 +1,14 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
-import { BackToTop } from "@/components/BackToTop";
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
-import { ShopProvider } from "@/components/ShopProvider";
-import { CatalogProvider } from "@/lib/catalog-context";
-import { getCatalog, getSettings, mergeSite } from "@/lib/db";
-import { SiteProvider } from "@/lib/site-context";
 import { SITE } from "@/data/site";
 import { jakarta } from "./fonts";
 import "./globals.css";
 
 /**
+ * Layout akar: hanya <html>/<body> + metadata.
+ *
+ * Chrome toko (header, footer, provider data) ada di app/(site)/layout.tsx,
+ * sehingga halaman /admin tampil tanpa navbar & footer toko.
+ *
  * Halaman dibuat dynamic per-request supaya useSearchParams (header, filter
  * katalog, cek transaksi, FAQ) ter-render utuh di HTML — bukan blank sampai JS.
  */
@@ -90,11 +87,7 @@ const JSON_LD = {
   ],
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  // Katalog + pengaturan dari Supabase (fallback otomatis ke data statis)
-  const [cats, settings] = await Promise.all([getCatalog(), getSettings()]);
-  const site = settings ? mergeSite(settings) : SITE;
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="id">
       <body className={jakarta.variable}>
@@ -104,18 +97,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         >
           Lompat ke konten utama
         </a>
-        <SiteProvider site={site}>
-          <CatalogProvider cats={cats}>
-            <ShopProvider>
-              <Suspense fallback={null}>
-                <Header />
-              </Suspense>
-              {children}
-              <Footer />
-              <BackToTop />
-            </ShopProvider>
-          </CatalogProvider>
-        </SiteProvider>
+        {children}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
       </body>
     </html>
