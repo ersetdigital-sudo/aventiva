@@ -60,6 +60,8 @@ export async function POST(req: Request) {
     .from(ASSET_BUCKET)
     .upload(OBJECT, await file.arrayBuffer(), {
       contentType: file.type,
+      // cache pendek: image diganti lewat upload, jangan sampai versi lama nempel lama di CDN
+      cacheControl: "60",
       upsert: true,
     });
 

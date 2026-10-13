@@ -39,6 +39,9 @@ export function BuyDialog() {
   const [processing, setProcessing] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
   const [qrFailed, setQrFailed] = useState(false);
+  // versi cache-bust: dibuat sekali per muat halaman supaya customer selalu
+  // menarik gambar QRIS terbaru (bukan versi lama dari cache/CDN)
+  const [qrVer] = useState(() => Date.now());
   const CATS = useCatalog();
 
   const cat = pending ? CATS[pending.cat] : null;
@@ -266,7 +269,7 @@ export function BuyDialog() {
           <div className="mx-auto" style={{ width: 208, height: 208 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={qrisUrl()}
+              src={`${qrisUrl()}?v=${qrVer}`}
               alt="Kode QRIS Aventiva Digital"
               width={208}
               height={208}
