@@ -37,3 +37,25 @@ export const ASSET_BUCKET = "assets";
 export function qrisUrl(): string {
   return `${SUPABASE_URL}/storage/v1/object/public/${ASSET_BUCKET}/qris.png`;
 }
+
+/**
+ * Ambil URL gambar QRIS + versinya (dari header ETag, berubah tiap admin
+ * mengganti file). Dipakai bersama oleh dialog customer dan pratinjau admin
+ * supaya keduanya membaca gambar yang sama dan tidak menyajikan versi lama
+ * dari cache setelah upload ulang. `ok` false berarti gambar belum tersedia.
+ */
+export async function loadQris(): Promise<{ url: string; ok: boolean }> {
+  const base = qrisUrl();
+  if (!supabaseEnabled) return { url: base, ok: false };
+  try {
+    const res = await fetch(base, { method: "HEAD", cache: "no-store" });
+    if (!res.ok) return { url: base, ok: false };
+    const v = (res.headers.get("etag") ?? res.headers.get("last-modified") ?? "").replace(
+      /[^A-Za-z0-9._-]/g,
+      "",
+    );
+    return { url: v ? `${base}?v=${v}` : `${base}?v=${Date.now()}`, ok: true };
+  } catch {
+    return { url: base, ok: false };
+  }
+}

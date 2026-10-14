@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Icon } from "@/lib/icons";
-import { qrisUrl, supabaseEnabled } from "@/lib/supabase";
+import { loadQris, supabaseEnabled } from "@/lib/supabase";
 import { Toast, type ToastData } from "./Toast";
 
 const MAX_BYTES = 4 * 1024 * 1024;
@@ -22,17 +22,17 @@ export function QrisPanel() {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [ver, setVer] = useState(0);
-  // gambar tersimpan gagal dimuat (belum pernah upload) — pakai state, bukan
-  // mutasi DOM, supaya React tetap memegang kendali atas node di dalam .adm-drop
-  const [broken, setBroken] = useState(false);
+  const [qrSrc, setQrSrc] = useState<string | null>(null);
   const [toast, setToast] = useState<ToastData | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const toastId = useRef(0);
 
-  const live = supabaseEnabled ? qrisUrl() : "";
-  const currentQr = live ? `${live}${live.includes("?") ? "&" : "?"}v=${ver}` : "";
+  // URL gambar tersimpan + versinya — sumber sama dengan dialog customer
+  const refreshQris = useCallback(async () => {
+    const q = await loadQris();
+    setQrSrc(q.ok ? q.url : null);
+  }, []);
 
   const notify = useCallback((kind: ToastData["kind"], text: string) => {
     toastId.current += 1;
@@ -45,10 +45,10 @@ export function QrisPanel() {
     return () => URL.revokeObjectURL(preview);
   }, [preview]);
 
-  // setelah upload berhasil (ver berubah), coba muat ulang gambar tersimpan
+  // muat gambar tersimpan saat tab dibuka, dan lagi tiap habis upload
   useEffect(() => {
-    setBroken(false);
-  }, [ver]);
+    void refreshQris();
+  }, [refreshQris]);
 
   /** Kosongkan pilihan file: state + input bawaan (nama file balik ke placeholder). */
   function clearFile() {
@@ -86,7 +86,7 @@ export function QrisPanel() {
       const res = await fetch("/api/admin/qris", { method: "POST", body: fd });
       const data = (await res.json().catch(() => null)) as { ok?: boolean; error?: string } | null;
       if (res.ok && data?.ok) {
-        setVer(Date.now());
+        await refreshQris();
         clearFile();
         notify("ok", "QRIS berhasil diperbarui");
       } else {
@@ -119,17 +119,17 @@ export function QrisPanel() {
           {preview ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={preview} alt="Pratinjau QRIS baru" />
-          ) : currentQr && !broken ? (
+          ) : qrSrc ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              key={currentQr}
-              src={currentQr}
+              key={qrSrc}
+              src={qrSrc}
               alt="Gambar QRIS tersimpan"
-              onError={() => setBroken(true)}
+              onError={() => setQrSrc(null)}
             />
           ) : (
             <span className="adm-drop-note">
-              {currentQr ? "Belum ada gambar" : "Supabase belum dikonfigurasi"}
+              {supabaseEnabled ? "Belum ada gambar" : "Supabase belum dikonfigurasi"}
             </span>
           )}
         </div>

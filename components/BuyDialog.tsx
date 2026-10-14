@@ -5,11 +5,13 @@ import { FEE, PAY } from "@/data/payments";
 import { useCatalog } from "@/lib/catalog-context";
 import { saveTransaction } from "@/lib/db";
 import { rp } from "@/lib/format";
-import { qrisUrl, supabaseEnabled } from "@/lib/supabase";
+import { Icon } from "@/lib/icons";
+import { loadQris } from "@/lib/supabase";
 import type { Tx } from "@/lib/tx-types";
 import { useShop } from "@/lib/shop-context";
 type Step = "info" | "pay" | "done";
 type Result = { ref: string; total: number; label: string; value: string; va: string };
+type QrPhase = "loading" | "ready" | "error";
 
 const GROUPS = PAY.map((g) => ({
   title: g.group,
@@ -38,10 +40,10 @@ export function BuyDialog() {
   const [method, setMethod] = useState("");
   const [processing, setProcessing] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
-  const [qrFailed, setQrFailed] = useState(false);
-  // versi cache-bust: dibuat sekali per muat halaman supaya customer selalu
-  // menarik gambar QRIS terbaru (bukan versi lama dari cache/CDN)
-  const [qrVer] = useState(() => Date.now());
+  // status gambar QRIS di langkah terakhir: memuat → siap → gagal
+  const [qrPhase, setQrPhase] = useState<QrPhase>("loading");
+  const [qrSrc, setQrSrc] = useState<string | null>(null);
+  const [qrTry, setQrTry] = useState(0); // dinaikkan saat tombol "Coba lagi" ditekan
   const CATS = useCatalog();
 
   const cat = pending ? CATS[pending.cat] : null;
@@ -63,9 +65,29 @@ export function BuyDialog() {
       setMethod("");
       setResult(null);
       setProcessing(false);
-      setQrFailed(false);
+      setQrPhase("loading");
+      setQrSrc(null);
     }
   }, [pending]);
+
+  // ambil URL QRIS + versinya saat langkah pembayaran QRIS selesai
+  useEffect(() => {
+    if (step !== "done" || result?.value !== "qris") return;
+    let alive = true;
+    setQrPhase("loading");
+    setQrSrc(null);
+    void loadQris().then((q) => {
+      if (!alive) return;
+      if (!q.ok) {
+        setQrPhase("error");
+        return;
+      }
+      setQrSrc(q.url);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [step, result?.value, qrTry]);
 
   if (!cat || !item) return <dialog ref={dlg} aria-label="Pembelian" />;
 
@@ -261,30 +283,45 @@ export function BuyDialog() {
   }
 
   // step: done
-  const qrReady = supabaseEnabled && !qrFailed;
+  const qrBlock =
+    qrPhase === "error" ? (
+      <div className="qr-fail" role="alert">
+        <Icon name="alert" width={26} height={26} />
+        <p>QRIS belum tersedia, hubungi admin</p>
+        <button type="button" className="btn-o" onClick={() => setQrTry((n) => n + 1)}>
+          Coba lagi
+        </button>
+      </div>
+    ) : (
+      <div className="qr-frame">
+        {qrSrc ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            className={`qr-img${qrPhase === "ready" ? " is-ready" : ""}`}
+            src={qrSrc}
+            alt="Kode QRIS Aventiva Digital"
+            onLoad={(e) => {
+              const el = e.currentTarget;
+              // gambar terlalu kecil / placeholder (mis. 1×1) dianggap belum tersedia
+              if (el.naturalWidth < 64 || el.naturalHeight < 64) setQrPhase("error");
+              else setQrPhase("ready");
+            }}
+            onError={() => setQrPhase("error")}
+          />
+        ) : null}
+        {qrPhase !== "ready" ? <span className="qr-skel" aria-hidden="true" /> : null}
+      </div>
+    );
+
   const how =
     result?.value === "qris" ? (
       <>
-        {qrReady ? (
-          <div className="mx-auto" style={{ width: 208, height: 208 }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={`${qrisUrl()}?v=${qrVer}`}
-              alt="Kode QRIS Aventiva Digital"
-              width={208}
-              height={208}
-              style={{ width: "100%", height: "100%", objectFit: "contain" }}
-              onError={() => setQrFailed(true)}
-            />
-          </div>
-        ) : (
-          <div className="pm-qr" aria-label="Kode QR contoh">
-            {Array.from({ length: 49 }, (_, j) => (
-              <i key={j} style={{ background: (j * 7 + (j % 3)) % 3 ? "#1B1B4B" : "#fff" }} />
-            ))}
-          </div>
-        )}
-        <p className="text-sm text-slate-500 mt-2">Scan QRIS ini dengan aplikasi e-wallet atau m-banking.</p>
+        {qrBlock}
+        {qrPhase !== "error" ? (
+          <p className="text-sm text-slate-500 mt-2">
+            Scan QRIS ini dengan aplikasi e-wallet atau m-banking.
+          </p>
+        ) : null}
       </>
     ) : result?.va ? (
       <>
