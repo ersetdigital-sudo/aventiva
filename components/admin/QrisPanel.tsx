@@ -1,24 +1,44 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Icon } from "@/lib/icons";
 import { qrisUrl, supabaseEnabled } from "@/lib/supabase";
+import { Toast, type ToastData } from "./Toast";
 
-type Status = { ok: boolean; msg: string } | null;
+const MAX_BYTES = 4 * 1024 * 1024;
+const OK_TYPES = ["image/png", "image/jpeg"];
+
+/** Ubah pesan error dari server jadi teks yang ramah untuk admin. */
+function errorText(msg?: string): string {
+  const m = (msg ?? "").toLowerCase();
+  if (m.includes("4 mb") || m.includes("ukuran")) return "Ukuran file melebihi 4 MB";
+  if (m.includes("png") || m.includes("jpg") || m.includes("format") || m.includes("gambar"))
+    return "Format harus PNG atau JPG";
+  return "Gagal mengunggah, coba lagi";
+}
 
 /** Tab QRIS: unggah gambar QRIS yang tampil di dialog pembayaran. */
 export function QrisPanel() {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [status, setStatus] = useState<Status>(null);
   const [ver, setVer] = useState(0);
   // gambar tersimpan gagal dimuat (belum pernah upload) — pakai state, bukan
   // mutasi DOM, supaya React tetap memegang kendali atas node di dalam .adm-drop
   const [broken, setBroken] = useState(false);
+  const [toast, setToast] = useState<ToastData | null>(null);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const toastId = useRef(0);
 
   const live = supabaseEnabled ? qrisUrl() : "";
   const currentQr = live ? `${live}${live.includes("?") ? "&" : "?"}v=${ver}` : "";
+
+  const notify = useCallback((kind: ToastData["kind"], text: string) => {
+    toastId.current += 1;
+    setToast({ id: toastId.current, kind, text });
+  }, []);
+  const closeToast = useCallback(() => setToast(null), []);
 
   useEffect(() => {
     if (!preview) return;
@@ -30,26 +50,50 @@ export function QrisPanel() {
     setBroken(false);
   }, [ver]);
 
+  /** Kosongkan pilihan file: state + input bawaan (nama file balik ke placeholder). */
+  function clearFile() {
+    setFile(null);
+    setPreview(null);
+    if (inputRef.current) inputRef.current.value = "";
+  }
+
+  function pick(f: File | null) {
+    if (!f) {
+      clearFile();
+      return;
+    }
+    if (!OK_TYPES.includes(f.type)) {
+      notify("err", "Format harus PNG atau JPG");
+      clearFile();
+      return;
+    }
+    if (f.size > MAX_BYTES) {
+      notify("err", "Ukuran file melebihi 4 MB");
+      clearFile();
+      return;
+    }
+    setFile(f);
+    setPreview(URL.createObjectURL(f));
+  }
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    setStatus(null);
-    if (!file) return setStatus({ ok: false, msg: "Pilih gambar QRIS dulu." });
+    if (!file || busy) return;
     setBusy(true);
     try {
       const fd = new FormData();
       fd.set("file", file);
       const res = await fetch("/api/admin/qris", { method: "POST", body: fd });
-      const data = (await res.json()) as { ok: boolean; error?: string };
-      if (data.ok) {
+      const data = (await res.json().catch(() => null)) as { ok?: boolean; error?: string } | null;
+      if (res.ok && data?.ok) {
         setVer(Date.now());
-        setPreview(null);
-        setFile(null);
-        setStatus({ ok: true, msg: "Gambar QRIS tersimpan di Supabase Storage." });
+        clearFile();
+        notify("ok", "QRIS berhasil diperbarui");
       } else {
-        setStatus({ ok: false, msg: data.error ?? "Upload gagal." });
+        notify("err", errorText(data?.error));
       }
-    } catch (err) {
-      setStatus({ ok: false, msg: `Gagal menghubungi server. ${String(err)}` });
+    } catch {
+      notify("err", "Gagal mengunggah, coba lagi");
     } finally {
       setBusy(false);
     }
@@ -57,6 +101,8 @@ export function QrisPanel() {
 
   return (
     <section className="adm-card">
+      <Toast data={toast} onClose={closeToast} />
+
       <div className="adm-card-head">
         <div>
           <h2>Gambar QRIS</h2>
@@ -89,34 +135,46 @@ export function QrisPanel() {
         </div>
 
         <form onSubmit={submit} className="adm-qris-form">
-          <label className="adm-lbl" htmlFor="qrfile">
+          <span className="adm-lbl" id="qrf-label">
             Pilih gambar QRIS
-          </label>
+          </span>
           <input
             id="qrfile"
-            className="adm-file"
+            ref={inputRef}
+            className="adm-file-native"
             type="file"
-            accept="image/*"
-            onChange={(e) => {
-              const f = e.target.files?.[0] ?? null;
-              setFile(f);
-              setPreview(f ? URL.createObjectURL(f) : null);
-              setStatus(null);
-            }}
+            accept="image/png,image/jpeg"
+            aria-labelledby="qrf-label"
+            disabled={busy}
+            onChange={(e) => pick(e.target.files?.[0] ?? null)}
           />
-          <button className="adm-btn adm-btn--accent adm-btn--block" disabled={busy}>
-            <Icon name="up" width={16} height={16} />
-            {busy ? "Mengupload…" : "Upload ke Supabase"}
-          </button>
-          {status ? (
-            <p
-              role="status"
-              className={`adm-note ${status.ok ? "adm-note--ok" : "adm-note--err"}`}
+          <div className="adm-file-row">
+            <label htmlFor="qrfile" className={`adm-file-btn${busy ? " is-disabled" : ""}`}>
+              Pilih Gambar
+            </label>
+            <span className="adm-file-name">{file ? file.name : "Belum ada file dipilih"}</span>
+          </div>
+
+          <div className={`adm-upload${file ? " is-open" : ""}`} aria-hidden={!file}>
+            <button
+              type="submit"
+              className="adm-btn adm-btn--accent adm-btn--block"
+              disabled={busy}
+              tabIndex={file ? 0 : -1}
             >
-              <Icon name={status.ok ? "check" : "alert"} width={16} height={16} />
-              <span>{status.msg}</span>
-            </p>
-          ) : null}
+              {busy ? (
+                <>
+                  <span className="adm-spin" aria-hidden="true" />
+                  Menyimpan...
+                </>
+              ) : (
+                <>
+                  <Icon name="upload" width={16} height={16} />
+                  Perbarui QRIS
+                </>
+              )}
+            </button>
+          </div>
         </form>
       </div>
     </section>
