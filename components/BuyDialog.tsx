@@ -1,24 +1,27 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { FEE, PAY } from "@/data/payments";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useCatalog } from "@/lib/catalog-context";
 import { saveTransaction } from "@/lib/db";
 import { rp } from "@/lib/format";
 import { Icon } from "@/lib/icons";
-import { loadQris } from "@/lib/supabase";
+import {
+  FALLBACK_METHODS,
+  feeLabel,
+  feeOf,
+  groupMethods,
+  isQris,
+  type PaymentMethod,
+} from "@/lib/payment-types";
+import { getSupabase, loadQris } from "@/lib/supabase";
 import type { Tx } from "@/lib/tx-types";
 import { useShop } from "@/lib/shop-context";
 type Step = "info" | "pay" | "done";
-type Result = { ref: string; total: number; label: string; value: string; va: string };
 type QrPhase = "loading" | "ready" | "error";
+type Result = { ref: string; total: number; fee: number; method: PaymentMethod };
 
-const GROUPS = PAY.map((g) => ({
-  title: g.group,
-  options: g.subs
-    ? g.subs.map(([label, value]) => ({ label, value, desc: "" }))
-    : [{ label: g.group, value: g.value, desc: g.desc }],
-}));
+const METHOD_COLUMNS =
+  "id, code, name, grp, descr, fee_type, fee_value, account_no, account_name, instructions, logo, active, sort";
 
 function saveTx(tx: Record<string, unknown>) {
   try {
@@ -37,9 +40,11 @@ export function BuyDialog() {
   const [step, setStep] = useState<Step>("info");
   const [target, setTarget] = useState("");
   const [err, setErr] = useState("");
-  const [method, setMethod] = useState("");
+  const [methods, setMethods] = useState<PaymentMethod[] | null>(null);
+  const [methodId, setMethodId] = useState<number | null>(null);
   const [processing, setProcessing] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
+  const [copied, setCopied] = useState(false);
   // status gambar QRIS di langkah terakhir: memuat → siap → gagal
   const [qrPhase, setQrPhase] = useState<QrPhase>("loading");
   const [qrSrc, setQrSrc] = useState<string | null>(null);
@@ -62,17 +67,44 @@ export function BuyDialog() {
       setStep("info");
       setTarget("");
       setErr("");
-      setMethod("");
+      setMethodId(null);
       setResult(null);
       setProcessing(false);
+      setCopied(false);
       setQrPhase("loading");
       setQrSrc(null);
     }
   }, [pending]);
 
+  // muat metode pembayaran aktif dari database saat dialog dibuka
+  useEffect(() => {
+    if (!pending) return;
+    let alive = true;
+    setMethods(null);
+    const sb = getSupabase();
+    if (!sb) {
+      setMethods(FALLBACK_METHODS);
+      return;
+    }
+    void (async () => {
+      const { data, error } = await sb
+        .from("payment_methods")
+        .select(METHOD_COLUMNS)
+        .eq("active", true)
+        .order("sort", { ascending: true })
+        .order("id", { ascending: true });
+      if (!alive) return;
+      // tabel belum dibuat / koneksi gagal → tetap tampilkan QRIS agar checkout jalan
+      setMethods(error ? FALLBACK_METHODS : ((data ?? []) as PaymentMethod[]));
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [pending]);
+
   // ambil URL QRIS + versinya saat langkah pembayaran QRIS selesai
   useEffect(() => {
-    if (step !== "done" || result?.value !== "qris") return;
+    if (step !== "done" || !result || !isQris(result.method)) return;
     let alive = true;
     setQrPhase("loading");
     setQrSrc(null);
@@ -87,7 +119,17 @@ export function BuyDialog() {
     return () => {
       alive = false;
     };
-  }, [step, result?.value, qrTry]);
+  }, [step, result, qrTry]);
+
+  const copy = useCallback(async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* clipboard tidak tersedia — abaikan */
+    }
+  }, []);
 
   if (!cat || !item) return <dialog ref={dlg} aria-label="Pembelian" />;
 
@@ -96,8 +138,11 @@ export function BuyDialog() {
   const product = item;
 
   const sub = item.bill ? 0 : item.p + cat.admin;
-  const fee = method ? (FEE[method] ?? 0) : 0;
+  const sel = methods?.find((m) => m.id === methodId) ?? null;
+  const fee = sel ? feeOf(sel, sub) : 0;
   const total = sub + fee;
+  const groups = groupMethods(methods ?? []);
+  const noMethods = methods !== null && methods.length === 0;
 
   function submitInfo(e: React.FormEvent) {
     e.preventDefault();
@@ -112,18 +157,19 @@ export function BuyDialog() {
 
   function submitPay(e: React.FormEvent) {
     e.preventDefault();
-    if (!method) {
+    if (!sel) {
       setErr("Pilih metode pembayaran dulu.");
       return;
     }
     setErr("");
     setProcessing(true);
-    const label = GROUPS.flatMap((g) => g.options).find((o) => o.value === method)?.label ?? method;
+    const chosen = sel;
     const catKey = pending!.cat;
     const digits = target.replace(/\D/g, "");
     setTimeout(() => {
       const ref = "AVD-" + Date.now().toString(36).toUpperCase();
-      const paid = product.bill ? 0 : product.p + category.admin + (FEE[method] ?? 0);
+      const methodFee = feeOf(chosen, product.bill ? 0 : product.p + category.admin);
+      const paid = product.bill ? 0 : product.p + category.admin + methodFee;
       const tx: Tx = {
         id: ref,
         k: catKey,
@@ -132,17 +178,12 @@ export function BuyDialog() {
         p: paid,
         d: Date.now(),
         s: "pending",
-        pm: label,
+        pm: chosen.name,
+        fee: methodFee,
       };
       saveTx(tx); // cadangan lokal (bila Supabase tidak terjangkau)
       void saveTransaction(tx); // tersimpan di database
-      const va = method.startsWith("va-")
-        ? "8808 " +
-          String(Date.now())
-            .slice(-10)
-            .replace(/(\d{4})(\d{4})(\d{2})/, "$1 $2 $3")
-        : "";
-      setResult({ ref, total: paid, label, value: method, va });
+      setResult({ ref, total: paid, fee: methodFee, method: chosen });
       setProcessing(false);
       setStep("done");
     }, 600);
@@ -228,30 +269,38 @@ export function BuyDialog() {
           </div>
           <fieldset className="pm-list">
             <legend className="sr-only">Metode pembayaran</legend>
-            {GROUPS.map((g) => (
-              <div key={g.title}>
-                <div className="pm-g">{g.title}</div>
-                {g.options.map((o) => (
-                  <label key={o.value} className="pm">
-                    <input
-                      type="radio"
-                      name="pm"
-                      value={o.value}
-                      checked={method === o.value}
-                      onChange={() => {
-                        setMethod(o.value);
-                        setErr("");
-                      }}
-                    />
-                    <span className="pm-b">
-                      <b>{o.label}</b>
-                      {o.desc ? <small>{o.desc}</small> : null}
-                    </span>
-                    <span className="pm-f">{(FEE[o.value] ?? 0) > 0 ? `+${rp(FEE[o.value])}` : "Gratis"}</span>
-                  </label>
-                ))}
-              </div>
-            ))}
+            {methods === null ? (
+              Array.from({ length: 3 }, (_, i) => (
+                <span key={i} className="sk pm-skel" aria-hidden="true" />
+              ))
+            ) : noMethods ? (
+              <p className="pm-empty">Metode pembayaran belum tersedia.</p>
+            ) : (
+              groups.map((g) => (
+                <div key={g.grp}>
+                  <div className="pm-g">{g.grp}</div>
+                  {g.items.map((m) => (
+                    <label key={m.id} className="pm">
+                      <input
+                        type="radio"
+                        name="pm"
+                        value={m.id}
+                        checked={methodId === m.id}
+                        onChange={() => {
+                          setMethodId(m.id);
+                          setErr("");
+                        }}
+                      />
+                      <span className="pm-b">
+                        <b>{m.name}</b>
+                        {m.descr ? <small>{m.descr}</small> : null}
+                      </span>
+                      <span className="pm-f">{feeLabel(m, sub)}</span>
+                    </label>
+                  ))}
+                </div>
+              ))
+            )}
           </fieldset>
           <div className="text-sm flex justify-between mt-4">
             <span className="text-slate-500">Harga + admin</span>
@@ -259,7 +308,7 @@ export function BuyDialog() {
           </div>
           <div className="text-sm flex justify-between mt-1">
             <span className="text-slate-500">Biaya layanan pembayaran</span>
-            <span>{method ? (fee ? rp(fee) : "Gratis") : "–"}</span>
+            <span>{sel ? (fee ? rp(fee) : "Gratis") : "–"}</span>
           </div>
           <div className="flex justify-between mt-2 pt-2 border-t font-bold">
             <span>Total bayar</span>
@@ -268,7 +317,7 @@ export function BuyDialog() {
           <p className="text-sm text-red-600 mt-2" role="alert">
             {err}
           </p>
-          <button className="btn-primary w-full mt-3" disabled={processing}>
+          <button className="btn-primary w-full mt-3" disabled={processing || noMethods || !sel}>
             {processing ? (
               <>
                 <span className="spin" aria-hidden="true" /> Memproses…
@@ -283,6 +332,9 @@ export function BuyDialog() {
   }
 
   // step: done
+  const m = result?.method ?? null;
+  const isQr = m ? isQris(m) : false;
+
   const qrBlock =
     qrPhase === "error" ? (
       <div className="qr-fail" role="alert">
@@ -313,26 +365,36 @@ export function BuyDialog() {
       </div>
     );
 
-  const how =
-    result?.value === "qris" ? (
-      <>
-        {qrBlock}
-        {qrPhase !== "error" ? (
-          <p className="text-sm text-slate-500 mt-2">
-            Scan QRIS ini dengan aplikasi e-wallet atau m-banking.
-          </p>
-        ) : null}
-      </>
-    ) : result?.va ? (
-      <>
-        <p className="text-sm text-slate-500">Nomor Virtual Account {result.label}</p>
-        <p className="font-mono font-bold text-xl mt-1">{result.va}</p>
-      </>
-    ) : (
+  const how = isQr ? (
+    <>
+      {qrBlock}
+      {qrPhase !== "error" ? (
+        <p className="text-sm text-slate-500 mt-2">
+          Scan QRIS ini dengan aplikasi e-wallet atau m-banking.
+        </p>
+      ) : null}
+    </>
+  ) : m ? (
+    <>
       <p className="text-sm text-slate-500">
-        Kamu akan diarahkan ke aplikasi {result?.label} untuk menyelesaikan pembayaran.
+        Bayar via <b>{m.name}</b>
       </p>
-    );
+      <div className="pay-box">
+        <span className="pay-lbl">Nomor rekening / Virtual Account</span>
+        <div className="pay-no">
+          <span className="pay-val">{m.account_no || "—"}</span>
+          {m.account_no ? (
+            <button type="button" className="cp" onClick={() => void copy(m.account_no)}>
+              {copied ? "Tersalin" : "Salin"}
+            </button>
+          ) : null}
+        </div>
+        <span className="pay-lbl">Nama pemilik</span>
+        <span className="pay-owner">{m.account_name || "—"}</span>
+      </div>
+      {m.instructions ? <p className="pay-inst">{m.instructions}</p> : null}
+    </>
+  ) : null;
 
   return (
     <dialog ref={dlg} aria-label="Selesaikan pembayaran" onClose={close}>

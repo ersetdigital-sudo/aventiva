@@ -193,7 +193,13 @@ export function ActivityPanel() {
                     </td>
                     <td data-label="Produk">
                       <span className="adm-strong">{t.name}</span>
-                      {t.payment_method ? <span className="adm-muted"> · {t.payment_method}</span> : null}
+                      {t.payment_method ? (
+                        <span className="adm-muted">
+                          {" "}
+                          · {t.payment_method}
+                          {t.fee ? ` (+${rp(t.fee)})` : ""}
+                        </span>
+                      ) : null}
                     </td>
                     <td data-label="Tujuan">{t.target}</td>
                     <td data-label="Nominal" className="nowrap">

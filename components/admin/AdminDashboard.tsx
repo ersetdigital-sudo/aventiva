@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Icon } from "@/lib/icons";
 import { ActivityPanel } from "./ActivityPanel";
+import { PaymentsPanel } from "./PaymentsPanel";
 import { ProductsPanel } from "./ProductsPanel";
 import { QrisPanel } from "./QrisPanel";
 
@@ -11,6 +12,7 @@ const TABS = [
   { id: "aktivitas", label: "Transaksi & Aktivitas", icon: "receipt" },
   { id: "produk", label: "Produk & Harga", icon: "tag" },
   { id: "qris", label: "QRIS", icon: "wallet" },
+  { id: "bayar", label: "Metode Pembayaran", icon: "card" },
 ] as const;
 
 type TabId = (typeof TABS)[number]["id"];
@@ -61,6 +63,7 @@ export function AdminDashboard() {
         {tab === "aktivitas" && <ActivityPanel />}
         {tab === "produk" && <ProductsPanel />}
         {tab === "qris" && <QrisPanel />}
+        {tab === "bayar" && <PaymentsPanel onGoQris={() => setTab("qris")} />}
       </div>
     </div>
   );

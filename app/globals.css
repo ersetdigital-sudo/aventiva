@@ -297,6 +297,15 @@ dialog::backdrop{background:rgba(15,23,42,.5)}
 .pm-f{font-size:12px;font-weight:600;color:#027A48}
 .pm-qr{display:grid;grid-template-columns:repeat(7,1fr);width:168px;height:168px;margin:0 auto;padding:12px;background:#fff;border:1px solid #E5E7EB;border-radius:12px;gap:2px}
 .pm-qr i{border-radius:2px}
+/* Metode pembayaran dinamis: skeleton daftar + panel nomor rekening/VA */
+.pm-skel{height:58px;border-radius:12px}
+.pm-empty{margin:8px 0;padding:16px;text-align:center;font-size:14px;color:#6B7280}
+.pay-box{margin-top:14px;background:#F6F6FB;border-radius:12px;padding:14px 16px;text-align:left;display:flex;flex-direction:column;gap:4px}
+.pay-lbl{font-size:12px;color:#6B7280}
+.pay-no{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pay-val{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:20px;font-weight:800;letter-spacing:1px;color:#1B1B4B;word-break:break-all}
+.pay-owner{font-size:14px;font-weight:700;color:#111827}
+.pay-inst{margin-top:14px;font-size:13.5px;line-height:1.6;color:#4B5563;white-space:pre-line;text-align:left}
 /* Gambar QRIS di dialog pembayaran: skeleton saat memuat, pesan jelas saat gagal */
 .qr-frame{position:relative;display:flex;justify-content:center;align-items:center;width:100%;min-height:min(44vh,260px);margin:0 auto}
 .qr-img{display:block;width:auto;height:auto;max-width:min(300px,72vw);max-height:min(52vh,400px);border:1px solid #E5E7EB;border-radius:14px;background:#fff}
@@ -413,6 +422,19 @@ dialog::backdrop{background:rgba(15,23,42,.5)}
 .adm-upload{max-height:0;margin-top:-12px;opacity:0;overflow:hidden;transition:max-height .28s ease,opacity .22s ease,margin-top .28s ease}
 .adm-upload.is-open{max-height:72px;margin-top:0;opacity:1}
 .adm-spin{width:16px;height:16px;border:2.5px solid rgba(27,27,75,.25);border-top-color:#1B1B4B;border-radius:50%;animation:spin .7s linear infinite}
+/* Metode pembayaran: saklar aktif, textarea, dan tombol urutan */
+.adm-switch{position:relative;display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+.adm-switch input{position:absolute;width:1px;height:1px;opacity:0}
+.adm-switch-track{position:relative;width:38px;height:22px;flex-shrink:0;border-radius:999px;background:#D8D8E4;transition:background .2s}
+.adm-switch-track::after{content:"";display:block;width:18px;height:18px;margin:2px;border-radius:50%;background:#fff;transition:transform .2s}
+.adm-switch input:checked+.adm-switch-track{background:#4338CA}
+.adm-switch input:checked+.adm-switch-track::after{transform:translateX(16px)}
+.adm-switch input:focus-visible+.adm-switch-track{outline:2px solid #FDB022;outline-offset:2px}
+.adm-switch input:disabled+.adm-switch-track{opacity:.5}
+.adm-switch-tx{font-size:12.5px;font-weight:600;color:#4B5563}
+.adm-inp--area{height:auto;padding:10px 14px;line-height:1.5;resize:vertical;font-family:inherit}
+.adm-order{display:inline-flex;gap:4px}
+.adm-order .adm-btn{padding:0 10px}
 /* Tabel admin: panel putih bersih, kepala tabel rapat, angka rata kolom (tabular). */
 .adm-tbl{margin-top:16px;border:1px solid #E9E9F2;border-radius:16px;background:#fff;overflow-x:auto;box-shadow:0 1px 2px rgba(15,23,42,.04)}
 .adm-tbl table{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;font-weight:500;font-variant-numeric:tabular-nums}

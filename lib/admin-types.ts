@@ -34,6 +34,7 @@ export type AdminTransaction = {
   amount: number;
   status: Status;
   payment_method: string | null;
+  fee: number;
   token: string | null;
   created_at: string;
 };

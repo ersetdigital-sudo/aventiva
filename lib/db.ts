@@ -185,6 +185,7 @@ export async function saveTransaction(tx: Tx): Promise<boolean> {
       amount: tx.p,
       status: tx.s,
       payment_method: tx.pm ?? null,
+      fee: tx.fee ?? 0,
       token: tx.token ?? null,
       created_at: new Date(tx.d).toISOString(),
     });

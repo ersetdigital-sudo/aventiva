@@ -17,6 +17,8 @@ export type Tx = {
   token?: string;
   /** metode pembayaran */
   pm?: string;
+  /** biaya layanan metode pembayaran (rupiah) */
+  fee?: number;
   /** kategori produk (opsional) */
   k?: string;
 };

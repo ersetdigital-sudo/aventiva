@@ -7,7 +7,7 @@ import { createReadSupabase } from "@/lib/supabase-admin";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const COLUMNS = "id, cat_key, name, target, amount, status, payment_method, token, created_at";
+const COLUMNS = "id, cat_key, name, target, amount, status, payment_method, fee, token, created_at";
 
 /** GET → daftar transaksi terbaru, bisa difilter status dan dicari. */
 export async function GET(req: Request) {
