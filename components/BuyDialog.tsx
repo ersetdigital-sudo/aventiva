@@ -317,7 +317,7 @@ export function BuyDialog() {
           <p className="text-sm text-red-600 mt-2" role="alert">
             {err}
           </p>
-          <button className="btn-primary w-full mt-3" disabled={processing || noMethods || !sel}>
+          <button className="btn-primary w-full mt-3" disabled={processing || noMethods}>
             {processing ? (
               <>
                 <span className="spin" aria-hidden="true" /> Memproses…
